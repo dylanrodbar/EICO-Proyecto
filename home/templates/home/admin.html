@@ -163,14 +163,14 @@
             <!-- Modal content-->
             <div class="modal-content">           
                 <div class="modal-body" style="padding:40px 50px;">                
-                        <form class="form-signin" method='POST'  action= '{% url 'home:agregarUsuarios' %}'  > {% csrf_token %}
+                        <form class="form-signin" method='POST' enctype="multipart/form-data"  action= '{% url 'home:agregarUsuarios' %}'  > {% csrf_token %}
                             <h1 align="center">Usuarios</h1>
                             <br>
                             <h4>Seleccione el archvio para actualizar usuarios</h4>
                             <br>
                             <div class="fileinput fileinput-new input-group" data-provides="fileinput">
                                     <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
-                                    <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Seleccione el archivo</span><span class="fileinput-exists">Cambiar</span><input type="file" name="archivo"></span>
+                                    <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Seleccione el archivo</span><span class="fileinput-exists">Cambiar</span><input type="file" id="archivo" name="archivo"></span>
                                     <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Quitar</a>
                             </div>
                             <br>

@@ -100,7 +100,6 @@ def agregarUsuarios(request):
     
     file = request.FILES.get("archivo")
 
-    #image = file.read()
     elementos_excel = Excel.manejar_excel(file)
     
     
