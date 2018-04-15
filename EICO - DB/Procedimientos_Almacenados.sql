@@ -1,4 +1,6 @@
-#Procedure encargado de hacer el inicio de sesión, dado un usuario y contraseña
+
+
+#procedure encargado de hacer el inicio de sesión, dado un usuario y contraseña
 delimiter $$
 create procedure iniciar_sesion(correo_electronico varchar(40), contrasena varchar(50))
 
@@ -9,6 +11,12 @@ begin
 end $$
 delimiter ;
 
+
+
+#crud sitios de interés
+##################################################################################
+
+#c
 delimiter $$
 create procedure insertar_sitio_interes(titulo varchar(100), contenido text)
 begin
@@ -16,22 +24,17 @@ begin
 end $$
 delimiter ;
 
-
+#r
 delimiter $$
-create procedure insertar_media(link text, tipo_media_fk int)
+create procedure obtener_sitios_interes()
 begin
-	insert into Media(link, tipo_media_fk) values(link, tipo_media_fk);
-end $$
-delimiter ;
-
-delimiter $$
-create procedure obtener_media(id int)
-begin
-	select * from Media where Media.id = id;
+	select * from Sitio_Interes;
 end $$
 delimiter ;
 
 
+
+#u
 delimiter $$
 create procedure editar_sitio_interes(id int, titulo varchar(100), contenido text)
 begin
@@ -40,6 +43,9 @@ begin
 end $$
 delimiter ;
 
+
+
+#d
 delimiter $$
 create procedure eliminar_sitio_interes(id int)
 begin
@@ -47,17 +53,29 @@ begin
 end $$
 delimiter ;
 
+##################################################################################
+
+
+#crud servicios
+##################################################################################
+
+#c
 delimiter $$
-create procedure obtener_sitios_interes()
+create procedure insertar_servicio(titulo varchar(100), contenido text)
 begin
-	select * from Sitio_Interes;
+	insert into Servicio(titulo, contenido) values(titulo, contenido);
 end $$
 delimiter ;
 
-call obtener_sitios_interes
-##
+#r
+delimiter $$
+create procedure obtener_servicios()
+begin
+	select * from Servicio;
+end $$
+delimiter ;
 
-
+#u
 delimiter $$
 create procedure editar_servicio(id int, titulo varchar(100), contenido text)
 begin
@@ -66,6 +84,7 @@ begin
 end $$
 delimiter ;
 
+#d
 delimiter $$
 create procedure eliminar_servicio(id int)
 begin
@@ -73,28 +92,11 @@ begin
 end $$
 delimiter ;
 
-delimiter $$
-create procedure obtener_servicios()
-begin
-	select * from Servicio;
-end $$
-delimiter ;
-##
+
+##################################################################################
 
 
-
-
-
-
-delimiter $$
-create procedure insertar_servicio(titulo varchar(100), contenido text)
-begin
-	insert into Servicio(titulo, contenido) values(titulo, contenido);
-end $$
-delimiter ;
-
-
-
+#inserta un nuevo tipo de usuario (estudiante, director, administrador, egresado, funcionario)
 delimiter $$
 create procedure insertar_tipo_usuario(nombre varchar(13))
 begin
@@ -103,7 +105,7 @@ end $$
 delimiter ;
 
 
-
+#inserta tipo de calificación (relevante, indiferente, emocionante)
 delimiter $$
 create procedure insertar_tipo_calificacion(nombre varchar(13))
 begin
@@ -113,28 +115,10 @@ delimiter ;
 
 
 
-
 delimiter $$
-create procedure insertar_tipo_media(nombre varchar(13))
+create procedure insertar_usuario(nombre_usuario varchar(50), contrasena varchar(50), correo_electronico varchar(40), titulo varchar(100), profesion varchar(100), lugar_trabajo varchar(200), media text, tipo_usuario_fk int)
 begin
-	insert into Tipo_Media(nombre) values(nombre);
-end $$
-delimiter ;
-
-
-
-
-delimiter $$
-create procedure insertar_tipo_formacion(nombre varchar(13))
-begin
-	insert into Tipo_Formacion(nombre) values(nombre);
-end $$
-delimiter ;
-
-delimiter $$
-create procedure insertar_usuario(nombre_usuario varchar(50), contrasena varchar(50), correo_electronico varchar(40), media_fk int, tipo_usuario_fk int)
-begin
-	insert into Usuario(nombre_usuario, contrasena, correo_electronico, media_fk, tipo_usuario_fk) values(nombre_usuario, contrasena, correo_electronico, media_fk, tipo_usuario_fk);
+	insert into Usuario(nombre_usuario, contrasena, correo_electronico, titulo, profesion, lugar_trabajo, media, tipo_usuario_fk) values(nombre_usuario, contrasena, correo_electronico, titulo, profesion, lugar_trabajo, media, tipo_usuario_fk);
 end $$
 delimiter ;
 
@@ -154,7 +138,7 @@ delimiter $$
 create procedure obtener_publicaciones_egresados()
 
 begin
-	select p.titulo, p.descripcion, p.fecha, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
+	select p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
     where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre = 'Egresado';
 end $$
 delimiter ;
@@ -163,19 +147,18 @@ delimiter $$
 create procedure obtener_publicaciones_escuela()
 
 begin
-	select p.titulo, p.descripcion, p.fecha, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
+	select p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
     where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado';
 end $$
 delimiter ;
 
 delimiter $$
-create procedure insertar_publicacion(titulo varchar(100), descripcion text, usuario_fk int)
+
+create procedure insertar_publicacion(titulo varchar(100), descripcion text, link_video text, media text,  usuario_fk int)
 
 begin
-	insert into Publicacion(titulo, descripcion, fecha, usuario_fk) values (titulo, descripcion, CURDATE(), usuario_fk);
+	insert into Publicacion(titulo, descripcion, link_video,  fecha, media, usuario_fk) values (titulo, descripcion, link_video, CURDATE(), media, usuario_fk);
 end $$
 delimiter ;
 
 
-call obtener_sitios_interes
-call obtener_servicios
