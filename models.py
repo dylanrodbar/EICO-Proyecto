@@ -5,8 +5,6 @@
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-from __future__ import unicode_literals
-
 from django.db import models
 
 
@@ -45,7 +43,7 @@ class AuthUser(models.Model):
     is_superuser = models.IntegerField()
     username = models.CharField(unique=True, max_length=150)
     first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=150)
     email = models.CharField(max_length=254)
     is_staff = models.IntegerField()
     is_active = models.IntegerField()
@@ -76,6 +74,16 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class Calendario(models.Model):
+    titulo = models.CharField(max_length=100, blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'calendario'
+
+
 class Calificacionxpublicacion(models.Model):
     publicacion_fk = models.ForeignKey('Publicacion', models.DO_NOTHING, db_column='publicacion_fk', blank=True, null=True)
     calificacion_fk = models.ForeignKey('TipoCalificacion', models.DO_NOTHING, db_column='calificacion_fk', blank=True, null=True)
@@ -99,7 +107,7 @@ class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
     object_repr = models.CharField(max_length=200)
-    action_flag = models.SmallIntegerField()
+    action_flag = models.PositiveSmallIntegerField()
     change_message = models.TextField()
     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
@@ -139,57 +147,38 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class Evento(models.Model):
-    titulo = models.CharField(max_length=100, blank=True, null=True)
+class Educacion(models.Model):
+    nombre_titulo = models.CharField(max_length=200, blank=True, null=True)
+    centro_educativo = models.CharField(max_length=200, blank=True, null=True)
+    fecha_inicio = models.DateField(blank=True, null=True)
+    fecha_final = models.DateField(blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
-    fecha = models.DateField(blank=True, null=True)
     usuario_fk = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='usuario_fk', blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'evento'
+        db_table = 'educacion'
 
 
-class Formacion(models.Model):
-    descripcion = models.CharField(max_length=100, blank=True, null=True)
-    tipo_formacion_fk = models.ForeignKey('TipoFormacion', models.DO_NOTHING, db_column='tipo_formacion_fk', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'formacion'
-
-
-class Formacionxusuario(models.Model):
+class ExperienciaOProyecto(models.Model):
+    nombre = models.CharField(max_length=200, blank=True, null=True)
+    lugar_trabajo = models.CharField(max_length=200, blank=True, null=True)
+    fecha_inicio = models.DateField(blank=True, null=True)
+    fecha_final = models.DateField(blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True)
     usuario_fk = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='usuario_fk', blank=True, null=True)
-    formacion_fk = models.ForeignKey(Formacion, models.DO_NOTHING, db_column='formacion_fk', blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'formacionxusuario'
-
-
-class Media(models.Model):
-    link = models.TextField(blank=True, null=True)
-    tipo_media_fk = models.ForeignKey('TipoMedia', models.DO_NOTHING, db_column='tipo_media_fk', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'media'
-
-
-class Mediaxpublicacion(models.Model):
-    publicacion_fk = models.ForeignKey('Publicacion', models.DO_NOTHING, db_column='publicacion_fk', blank=True, null=True)
-    media_fk = models.ForeignKey(Media, models.DO_NOTHING, db_column='media_fk', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'mediaxpublicacion'
+        db_table = 'experiencia_o_proyecto'
 
 
 class Publicacion(models.Model):
     titulo = models.CharField(max_length=100, blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
+    link_video = models.TextField(blank=True, null=True)
     fecha = models.DateField(blank=True, null=True)
+    media = models.TextField(blank=True, null=True)
     usuario_fk = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='usuario_fk', blank=True, null=True)
 
     class Meta:
@@ -223,22 +212,6 @@ class TipoCalificacion(models.Model):
         db_table = 'tipo_calificacion'
 
 
-class TipoFormacion(models.Model):
-    nombre = models.CharField(max_length=9, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'tipo_formacion'
-
-
-class TipoMedia(models.Model):
-    nombre = models.CharField(max_length=20, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'tipo_media'
-
-
 class TipoUsuario(models.Model):
     nombre = models.CharField(max_length=13, blank=True, null=True)
 
@@ -250,9 +223,12 @@ class TipoUsuario(models.Model):
 class Usuario(models.Model):
     nombre_usuario = models.CharField(max_length=50, blank=True, null=True)
     contrasena = models.CharField(max_length=50, blank=True, null=True)
-    tipo_usuario_fk = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='tipo_usuario_fk', blank=True, null=True)
     correo_electronico = models.CharField(max_length=40, blank=True, null=True)
-    media_fk = models.ForeignKey(Media, models.DO_NOTHING, db_column='media_fk', blank=True, null=True)
+    titulo = models.CharField(max_length=100, blank=True, null=True)
+    profesion = models.CharField(max_length=100, blank=True, null=True)
+    lugar_trabajo = models.CharField(max_length=200, blank=True, null=True)
+    media = models.TextField(blank=True, null=True)
+    tipo_usuario_fk = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='tipo_usuario_fk', blank=True, null=True)
 
     class Meta:
         managed = False

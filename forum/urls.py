@@ -2,6 +2,8 @@ from django.conf.urls import url, include
 from . import views
 
 
+app_name = "forum"
+
 urlpatterns = [ 
                 url(r'^escuela/$', views.viewEscuela, name='viewEscuela'),
                 url(r'^escuela/nueva$', views.newEscuela, name='newEscuela'),

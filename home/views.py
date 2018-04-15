@@ -3,7 +3,8 @@ from django.views import generic
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.db import connection
-from django.core.urlresolvers import reverse
+from django.urls import reverse
+
 import cv2
 import os
 import numpy as np
@@ -39,7 +40,7 @@ def login(request):
         request.session['IdTipoUsuario'] = login[0][1]
         request.session['TipoUsuario'] = login[0][2]
         
-        return HttpResponseRedirect(reverse('foro:viewEscuela'))
+        return HttpResponseRedirect(reverse('forum:viewEscuela'))
         #if login[0][1] == "Administrador":
         #    return HttpResponseRedirect(reverse('blog:noticias'))
         #elif login[0][1] == "Cliente":
