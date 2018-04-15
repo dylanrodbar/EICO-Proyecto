@@ -11,6 +11,10 @@ urlpatterns = [
                 url(r'^egresado/$', views.viewEgresado, name='viewEgresado'),  
                 url(r'^egresado/nueva$', views.newEgresado, name='newEgresado'), 
 
-                url(r'^insertarPost/$', views.insertarPost, name='insertarPost'), 
+                url(r'^insertarPost/$', views.insertarPost, name='insertarPost'),
+
+                url(r'^editar/$', views.editNoticia, name='editNoticia'),
+
+                url(r'^ver/$', views.viewNoticia, name="viewNoticia"),
                               
             ]

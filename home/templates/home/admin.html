@@ -127,28 +127,68 @@
 
     <div id="menu3" class="tab-pane fade">
       <h3>Calendario</h3>
+
+      <div class="row">
+            <div class="col-md-8">
+                <div class="input-group">
+
+                    <input type="date" name="dateAdd">
+                    <button class="btn" type="button" style="background:white;"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+                <div align="right" style="margin-right:18px; margin-bottom:8px;">
+                    <a href="#" data-toggle="modal" data-target="#AgregarEvento"><button type="submit" class="btn btn-default btn-sm" >
+                    <span class="glyphicon glyphicon-plus"></span></button></a>
+                </div>
+            </div>
+      </div>
       
       <ul class="list-group">
-            <div id="list" style="height: auto; max-height: 220px; overflow-x: hidden;">
+            <div id="list" style="height: auto; max-height: 450px; overflow-x: hidden;">
                 <li class="list-group-item">
                 <div class="row">
-                    <div class="col-md-8">Cras justo odio </div>
-                    <div class="col-md-4" align= "right">
-                        <button type="submit" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span></button>
-                        <button type="submit" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></button>
+                    <div class="col-md-8">
+                            <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">List group item heading</h5>
+                                    <small>10 abril 2018</small>
+                            </div>
                     </div>
-                    
+
+                    <div class="col-md-4" align= "right">
+                            <a href="#" data-toggle="modal" data-target="#EditarEvento"><button type="submit" class="btn btn-default btn-sm" >
+                                    <span class="glyphicon glyphicon-pencil"></span></button></a>
+                            <button type="submit" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+
                 </li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-                    
+                <li class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">List group item heading</h5>
+                        <small>10 abril 2018</small>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">List group item heading</h5>
+                            <small>10 abril 2018</small>
+                        </div>
+                </li>
+                <li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">List group item heading</h5>
+                            <small>10 abril 2018</small>
+                        </div>
+                </li>
+                <li class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">List group item heading</h5>
+                            <small>10 abril 2018</small>
+                        </div>
+                </li>
                     
             </div>
         </ul>
@@ -232,7 +272,66 @@
                     </div>
                 </div>    
             </div>
-        </div>  
+        </div>
+
+    <!-- Modal Agregar Evento -->
+  <div class="modal fade" id="AgregarEvento" role="dialog" style="padding-top:150px;">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body" style="padding:40px 50px;">
+                        <form class="form-signin">
+                            <h1 align="center">Calendario</h1>
+                            <br>
+                            <h4>Ingrese una fecha, titulo y descripcion</h4>
+                            <br>
+                            <input type="date" name="dateAdd" required>
+                            <br>
+                            <br>
+                            <label for="EditNameSitio" class="sr-only">Correo</label>
+                            <input type="text" id="input" class="form-control" placeholder="Nombre..." required autofocus>
+                            <br>
+                            <div class="form-group">
+                                    <label for="EditDescriptionSitio"></label>
+                                    <textarea class="form-control" rows="5" id="comment" placeholder="Descripcion..."></textarea>
+                            </div>
+                            <br>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Agregar</button>
+                      </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Modal Editar Evento -->
+
+     <div class="modal fade" id="EditarEvento" role="dialog" style="padding-top:150px;">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body" style="padding:40px 50px;">
+                            <form class="form-signin">
+                                <h1 align="center">Calendario</h1>
+                                <br>
+                                <h4>Ingrese la nueva fecha, titulo y descripcion</h4>
+                                <br>
+                                <input type="date" name="dateEdit" required>
+                                <br>
+                                <br>
+                                <label for="EditNameSitio" class="sr-only">Correo</label>
+                                <input type="text" id="input" class="form-control" placeholder="Nombre..." required autofocus>
+                                <br>
+                                <div class="form-group">
+                                        <label for="EditDescriptionSitio"></label>
+                                        <textarea class="form-control" rows="5" id="comment" placeholder="Descripcion..."></textarea>
+                                </div>
+                                <br>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Editar</button>
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 {% endblock %}

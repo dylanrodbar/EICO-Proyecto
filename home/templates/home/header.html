@@ -5,6 +5,8 @@
     <title>EICO</title>
     {% load staticfiles %}
     <link rel="stylesheet" href="{% static 'home/css/bootstrap.css' %}" type = "text/css"/>
+    <link rel="stylesheet" href="{% static 'home/css/card.css' %}" type = "text/css"/>
+
     <!-- <script src="{%static 'home/js/bootstrap.min.js' %}"></script> !-->
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -127,11 +129,12 @@
             <li><a href="/foro/egresado">EGRESADOS</a></li>
             <li><a href="/inicio/servicio">SERVICIOS</a></li>
             <li><a href="/inicio/interes">SITIOS DE INTERES</a></li>
-            <li><a href="#contact">CALENDARIO</a></li>
-            <li><a href="/inicio/admin">ADMINISTRADOR</a></li> 
+            <li><a href="/calendario">CALENDARIO</a></li>
+            <li><a href="/inicio/admin">ADMINISTRADOR</a></li>
+
             
           <!--  <li><a href="#contact">ADMINISTRADOR</a></li> !--> 
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+            <li><a href="/perfil"><span class="glyphicon glyphicon-user"></span></a></li>
             {% if not request.session.Usuario %}
             <li><a href='#' data-toggle="modal" data-target="#Login"><span class="glyphicon glyphicon-log-in"></span></a></li>
             {% endif %}

@@ -54,3 +54,10 @@ def insertarPost(request):
     cur.callproc('insertar_publicacion', [titulo, descripcion, user])
     cur.close
     return HttpResponseRedirect(reverse('forum:viewEscuela'))
+
+
+def viewNoticia(request):
+	return render(request, 'forum/detalleNoticia.html')
+
+def editNoticia(request):
+	return render(request, 'forum/editarNoticia.html')
