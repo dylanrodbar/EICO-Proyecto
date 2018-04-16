@@ -15,6 +15,6 @@ urlpatterns = [
 
                 url(r'^editar/$', views.editNoticia, name='editNoticia'),
 
-                url(r'^ver/$', views.viewNoticia, name="viewNoticia"),
+                url(r'^ver/(?P<id>[0-9]+)/$', views.viewNoticia, name="viewNoticia"),
                               
             ]

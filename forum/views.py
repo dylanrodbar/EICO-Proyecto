@@ -60,6 +60,8 @@ def insertarPost(request):
     link_video = request.POST.get('video')
     file = request.FILES.get("archivo")
 
+    embed_link_video = link_video.replace("watch?v=", "embed/")
+
     user = int(request.session['Usuario'])
 
     imagen_subida = cloudinary.uploader.upload(file)
@@ -68,14 +70,29 @@ def insertarPost(request):
     imagen_subida_url = imagen_subida["secure_url"]
 
     cur = connection.cursor()
-    cur.callproc('insertar_publicacion', [titulo, descripcion, link_video, imagen_subida_url, user])
+    cur.callproc('insertar_publicacion', [titulo, descripcion, embed_link_video, imagen_subida_url, user])
     cur.close
 
     return HttpResponseRedirect(reverse('forum:viewEscuela'))
 
 
-def viewNoticia(request):
-	return render(request, 'forum/detalleNoticia.html')
+def viewNoticia(request, id):
+
+    template = loader.get_template('forum/detalleNoticia.html')
+
+    cur = connection.cursor()
+    cur.callproc('obtener_publicacion_id', [id, ])
+    publicacion = cur.fetchall()
+
+    print(publicacion)
+
+    context = {
+        'publicacion': publicacion[0]
+    }
+
+    return HttpResponse(template.render(context, request))
+
+
 
 def editNoticia(request):
 	return render(request, 'forum/editarNoticia.html')
