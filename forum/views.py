@@ -4,9 +4,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.db import connection
 from django.urls import reverse
+import cloudinary.uploader
 
+cloudinary.config(
+    cloud_name = 'poppycloud',
+    api_key = '328358331617938',
+    api_secret = 'z-7k70XpvP1dl1ZdiqVF0olXp7A'
+)
 
-# Create your views here.
 def viewEscuela(request):
     template = loader.get_template('forum/escuela.html')
 
@@ -14,7 +19,8 @@ def viewEscuela(request):
     cur.callproc('obtener_publicaciones_escuela', [])
     noticias = cur.fetchall()
     cur.close
-    
+
+    print(noticias)
     
     context = {
    	    'noticias': noticias 
@@ -46,13 +52,25 @@ def newEscuela(request):
 	return render(request, 'forum/nuevaNoticia.html')
 
 def insertarPost(request):
+
     template = loader.get_template('forum/nuevaNoticia.html')
+
     titulo = request.POST.get('titulo')
     descripcion = request.POST.get('descripcion')
+    link_video = request.POST.get('video')
+    file = request.FILES.get("archivo")
+
     user = int(request.session['Usuario'])
+
+    imagen_subida = cloudinary.uploader.upload(file)
+
+    #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
+    imagen_subida_url = imagen_subida["secure_url"]
+
     cur = connection.cursor()
-    cur.callproc('insertar_publicacion', [titulo, descripcion, user])
+    cur.callproc('insertar_publicacion', [titulo, descripcion, link_video, imagen_subida_url, user])
     cur.close
+
     return HttpResponseRedirect(reverse('forum:viewEscuela'))
 
 
