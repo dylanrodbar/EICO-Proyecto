@@ -131,6 +131,8 @@ def changePost(request, id):
     cur.callproc('editar_publicacion', [id, titulo, descripcion, embed_link_video, imagen_subida_url])
     cur.close
 
+    return HttpResponseRedirect(reverse('perfil:viewProfile'))
+
 
 
 
