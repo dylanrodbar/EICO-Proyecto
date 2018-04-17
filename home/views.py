@@ -45,7 +45,17 @@ def login(request):
         #    return HttpResponseRedirect(reverse('blog:noticias'))
         #elif login[0][1] == "Cliente":
         #    return HttpResponseRedirect(reverse('blogClient:noticias'))
+def logout(request):
+    template = loader.get_template('home/header.html')
 
+    print("entra")
+    del request.session['Usuario']
+    del request.session['TipoUsuario']
+    del request.session['IdTipoUsuario']
+
+    request.session.modified = True
+
+    return HttpResponseRedirect(reverse('forum:viewEscuela'))
 def viewService(request):
     template = loader.get_template('home/servicio.html')
 

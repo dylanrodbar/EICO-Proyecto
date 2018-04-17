@@ -136,7 +136,11 @@
           <!--  <li><a href="#contact">ADMINISTRADOR</a></li> !--> 
             <li><a href="/perfil"><span class="glyphicon glyphicon-user"></span></a></li>
             {% if not request.session.Usuario %}
-            <li><a href='#' data-toggle="modal" data-target="#Login"><span class="glyphicon glyphicon-log-in"></span></a></li>
+                <li><a href='#' data-toggle="modal" data-target="#Login"><span class="glyphicon glyphicon-log-in"></span></a></li>
+            {% endif %}
+
+            {% if request.session.Usuario %}
+                <li><a href='/inicio/logout/' data-toggle="modal" data-target="/inicio/logout/"><span class="glyphicon glyphicon-log-in"></span></a></li>
             {% endif %}
         </ul>
         </div>
