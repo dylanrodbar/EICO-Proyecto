@@ -35,32 +35,12 @@ create table if not exists Tipo_Calificacion(
     primary key(id)
 );
 
-#create table if not exists Tipo_Media(
-#	id int auto_increment,
-#    nombre varchar(20),
-
-#    primary key(id)
-#);
 
 
 
 
-#create table if not exists Tipo_Formacion(
-#	id int auto_increment,
-#    nombre varchar(9),
-
-#    primary key(id)
-#);
 
 
-#create table if not exists Media(
-#	id int auto_increment,
-#    link text,
-#    tipo_media_fk int,
-
-#    primary key(id),
-#    foreign key(tipo_media_fk) references Tipo_Media(id)
-#);
 
 
 create table if not exists Usuario(
@@ -94,7 +74,6 @@ create table if not exists Educacion(
     #tipo_formacion_fk int,
 
     primary key(id),
-    #foreign key(tipo_formacion_fk) references Tipo_Formacion(id)
     foreign key(usuario_fk) references Usuario(id)
 );
 
@@ -108,10 +87,8 @@ create table if not exists Experiencia_O_Proyecto(
     fecha_final date,
     descripcion text,
     usuario_fk int,
-    #tipo_formacion_fk int,
 
     primary key(id),
-    #foreign key(tipo_formacion_fk) references Tipo_Formacion(id)
     foreign key(usuario_fk) references Usuario(id)
 );
 
@@ -164,18 +141,3 @@ create table if not exists CalificacionXPublicacion(
     foreign key(calificacion_fk) references Tipo_Calificacion(id)
 );
 
-#create table if not exists MediaXPublicacion(
-#	publicacion_fk int,
-#    media_fk int,
-
-#    foreign key(publicacion_fk) references Publicacion(id),
-#    foreign key(media_fk) references Media(id)
-#);
-
-#create table if not exists FormacionXUsuario(
-#	usuario_fk int,
-#    formacion_fk int,
-
-#    foreign key(usuario_fk) references Usuario(id),
-#    foreign key(formacion_fk) references Formacion(id)
-#);

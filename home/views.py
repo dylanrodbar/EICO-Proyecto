@@ -12,14 +12,14 @@ import Excel
 
 
 def index(request):
-	return render(request, 'home/index.html')
+    return render(request, 'home/index.html')
+
 
 def errorLogin(request):
     template = loader.get_template('home/index.html')
     context = {
         'error': "El usuario o contraseña es incorrecto"
-        }
-    
+    }
 
     return HttpResponse(template.render(context, request))
 
@@ -39,16 +39,17 @@ def login(request):
         request.session['Usuario'] = login[0][0]
         request.session['IdTipoUsuario'] = login[0][1]
         request.session['TipoUsuario'] = login[0][2]
-        
+
         return HttpResponseRedirect(reverse('forum:viewEscuela'))
-        #if login[0][1] == "Administrador":
+        # if login[0][1] == "Administrador":
         #    return HttpResponseRedirect(reverse('blog:noticias'))
-        #elif login[0][1] == "Cliente":
+        # elif login[0][1] == "Cliente":
         #    return HttpResponseRedirect(reverse('blogClient:noticias'))
+
+
 def logout(request):
     template = loader.get_template('home/header.html')
 
-    print("entra")
     del request.session['Usuario']
     del request.session['TipoUsuario']
     del request.session['IdTipoUsuario']
@@ -56,6 +57,8 @@ def logout(request):
     request.session.modified = True
 
     return HttpResponseRedirect(reverse('forum:viewEscuela'))
+
+
 def viewService(request):
     template = loader.get_template('home/servicio.html')
 
@@ -63,14 +66,13 @@ def viewService(request):
     cur.callproc('obtener_servicios', [])
     servicios = cur.fetchall()
     cur.close
-    
-    
+
     context = {
-   	    'servicios': servicios 
+        'servicios': servicios
     }
     return HttpResponse(template.render(context, request))
 
-	
+
 def viewInteres(request):
     template = loader.get_template('home/interes.html')
 
@@ -78,12 +80,12 @@ def viewInteres(request):
     cur.callproc('obtener_sitios_interes', [])
     sitios = cur.fetchall()
     cur.close
-    
-    
+
     context = {
-   	    'sitiosinteres': sitios 
+        'sitiosinteres': sitios
     }
     return HttpResponse(template.render(context, request))
+
 
 def admin(request):
     template = loader.get_template('home/admin.html')
@@ -97,25 +99,24 @@ def admin(request):
     cur.callproc('obtener_servicios', [])
     servicios = cur.fetchall()
     cur.close
-    
-    
+
     context = {
         'sitiosinteres': sitios,
         'servicios': servicios,
-        'id':0 
+        'id': 0
     }
     return HttpResponse(template.render(context, request))
 
+
 def agregarUsuarios(request):
     template = loader.get_template('home/admin.html')
-    
+
     file = request.FILES.get("archivo")
 
     elementos_excel = Excel.manejar_excel(file)
-    
-    
+
     cur = connection.cursor()
-    for i in(elementos_excel):
+    for i in (elementos_excel):
         usuario = i[0]
         contrasena = i[3]
         correo = i[1]
@@ -126,10 +127,8 @@ def agregarUsuarios(request):
 
     cur.close
 
-    
-
-    
     return HttpResponseRedirect(reverse('home:admin'))
+
 
 def agregarSitio(request):
     template = loader.get_template('home/admin.html')
@@ -141,6 +140,7 @@ def agregarSitio(request):
     cur.callproc('insertar_sitio_interes', [titulo, descripcion])
     cur.close
     return HttpResponseRedirect(reverse('home:admin'))
+
 
 def editarSitio(request, id):
     template = loader.get_template('home/editarsitio.html')
@@ -160,8 +160,8 @@ def editarSitioAux(request, id):
     cur.close
     return HttpResponseRedirect(reverse('home:admin'))
 
+
 def eliminarSitio(request, id):
-    
     template = loader.get_template('home/admin.html')
     context = {}
     cur = connection.cursor()
@@ -169,4 +169,3 @@ def eliminarSitio(request, id):
     cur.close
 
     return HttpResponseRedirect(reverse('home:admin'))
-
