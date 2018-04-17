@@ -96,6 +96,51 @@ delimiter ;
 ##################################################################################
 
 
+
+#crud calendario
+##################################################################################
+
+#c
+delimiter $$
+create procedure insertar_calendario(titulo varchar(100), descripcion text, fecha date)
+begin
+	insert into Calendario(titulo, descripcion, fecha) values(titulo, descripcion, fecha);
+end $$
+delimiter ;
+
+#r
+delimiter $$
+
+create procedure obtener_calendario()
+begin
+	select * from Calendario;
+end $$
+delimiter ;
+
+call obtener_calendario
+
+#u
+delimiter $$
+create procedure editar_calendario(id int, titulo varchar(100), descripcion text, fecha date)
+begin
+	update Calendario set Calendario.titulo = titulo, Calendario.descripcion = descripcion, Calendario.fecha = fecha
+    where Calendario.id = id;
+end $$
+delimiter ;
+
+#d
+delimiter $$
+create procedure eliminar_calendario(id int)
+begin
+	delete from Calendario where Calendario.id = id;
+end $$
+delimiter ;
+
+
+##################################################################################
+
+
+
 #inserta un nuevo tipo de usuario (estudiante, director, administrador, egresado, funcionario)
 delimiter $$
 create procedure insertar_tipo_usuario(nombre varchar(13))
@@ -138,27 +183,121 @@ delimiter $$
 create procedure obtener_publicaciones_egresados()
 
 begin
-	select p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
+	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
     where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre = 'Egresado';
 end $$
 delimiter ;
+
 
 delimiter $$
 create procedure obtener_publicaciones_escuela()
 
 begin
-	select p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
+	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
     where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado';
 end $$
 delimiter ;
 
-delimiter $$
 
+
+
+
+delimiter $$
 create procedure insertar_publicacion(titulo varchar(100), descripcion text, link_video text, media text,  usuario_fk int)
 
 begin
 	insert into Publicacion(titulo, descripcion, link_video,  fecha, media, usuario_fk) values (titulo, descripcion, link_video, CURDATE(), media, usuario_fk);
 end $$
 delimiter ;
+
+delimiter $$
+create procedure editar_publicacion(id int, titulo varchar(100), descripcion text, link_video text, media text)
+
+begin
+	update Publicacion set Publicacion.titulo = titulo, Publicacion.descripcion = descripcion, Publicacion.link_video = link_video, Publicacion.media = media
+    where Publicacion.id = id;
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure eliminar_publicacion(id int)
+
+begin
+	delete from Publicacion where Publicacion.id = id;
+end $$
+delimiter ;
+
+
+
+
+delimiter $$
+create procedure obtener_publicaciones_usuario(id int)
+
+begin
+	select p.titulo, p.descripcion, p.link_video, p.fecha, p.media, p.id from Publicacion p
+    where p.usuario_fk = id;
+end $$
+delimiter ;
+
+
+
+delimiter $$
+create procedure obtener_publicacion_id(id int)
+
+begin
+	select p.titulo, p.descripcion, p.link_video, p.fecha, p.media, u.nombre_usuario from Publicacion p, Usuario u
+    where p.usuario_fk = u.id and p.id = id;
+end $$
+delimiter ;
+
+
+
+
+delimiter $$
+create procedure obtener_usuario_id(id int)
+
+begin
+	select u.nombre_usuario, u.correo_electronico, u.titulo, u.profesion, u.lugar_trabajo, u.media from Usuario u
+    where u.id = id;
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure editar_usuario(id int, nombre_usuario varchar(50), correo_electronico varchar(40), titulo varchar(100), profesion varchar(100), lugar_trabajo varchar(200), media text)
+
+begin
+		update Usuario set Usuario.nombre_usuario = nombre_usuario, Usuario.correo_electronico = correo_electronico, Usuario.titulo = titulo, Usuario.profesion = profesion, Usuario.lugar_trabajo = lugar_trabajo, Usuario.media = media
+        where Usuario.id = id;
+end $$
+delimiter ;
+
+
+
+delimiter $$
+create procedure insertar_comentario_publicacion(descripcion text, usuario_fk int, publicacion_fk int)
+
+begin
+		insert into Comentario(descripcion, fecha, usuario_fk, publicacion_fk) values(descripcion, curdate(), usuario_fk, publicacion_fk);
+end $$
+delimiter ;
+
+
+
+
+delimiter $$
+create procedure obtener_comentarios_publicacion(id int)
+
+begin
+		select c.descripcion, c.fecha, u.nombre_usuario, u.media from Comentario c, Usuario u, Publicacion p
+        where p.id = id and c.publicacion_fk = p.id and c.usuario_fk = u.id;
+end $$
+delimiter ;
+
+
+
+
+
 
 
