@@ -51,9 +51,9 @@
               <br>
 
               <h4>Deja un comentario</h4>
-                <form role="form">
+                <form role="form" method='POST' enctype="multipart/form-data" action='{% url 'forum:insertarComentario' id %}'  target="_blank">  {% csrf_token %}>
                     <div class="form-group">
-                    <textarea class="form-control" rows="6" style="resize: none;"required></textarea>
+                    <textarea class="form-control" name="comentario" rows="6" style="resize: none;"required></textarea>
                     </div>
                     <div align="right">
                             <button type="submit" class="btn" style="background-color:#2471A3; color:white;">Enviar</button>
@@ -65,16 +65,16 @@
                 <ul class="list-group">
                     <div id="list" style="height: auto; max-height: 450px; overflow-x: hidden;">
                         
-                    {% for i in "x"|rjust:"5" %}
+                    {% for i in comentarios %}
                     <li class="list-group-item" style="border: none">
                         <div class="media">
                             <div class="media-left">
-                                <img src="{% static 'home/img/profile.jpg' %}" class="img-circle" style="width:60px">
+                                <img src={{ i.3 }} class="img-circle" style="width:60px">
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">Username <small><i>10 abril 2018</i></small></h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+                                <h4 class="media-heading">{{ i.2 }} <small><i>{{ i.1|date:"d-m-Y" }}</i></small></h4>
+                                <p>
+                                    {{ i.0 }}
                                 </p>
                             </div>
                         </div>

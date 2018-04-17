@@ -84,10 +84,17 @@ def viewNoticia(request, id):
     cur.callproc('obtener_publicacion_id', [id, ])
     publicacion = cur.fetchall()
 
-    print(publicacion)
+    cur.nextset()
+
+    cur.callproc('obtener_comentarios_publicacion', [id, ])
+    comentarios = cur.fetchall()
+
+    cur.close()
 
     context = {
-        'publicacion': publicacion[0]
+        'publicacion': publicacion[0],
+        'comentarios': comentarios,
+        'id': id
     }
 
     return HttpResponse(template.render(context, request))
@@ -136,3 +143,17 @@ def deleteNoticia(request, id):
 
     return HttpResponseRedirect(reverse('perfil:viewProfile'))
 
+
+
+def insertarComentario(request, id):
+    template = loader.get_template('forum/detalleNoticia.html')
+
+    id_usuario = int(request.session['Usuario'])
+    id_publicacion = id
+    comentario = request.POST.get('comentario')
+
+    cur = connection.cursor()
+    cur.callproc('insertar_comentario_publicacion', [comentario, id_usuario, id_publicacion])
+    cur.close
+
+    return HttpResponseRedirect(reverse('forum:viewNoticia', args=[id]))
