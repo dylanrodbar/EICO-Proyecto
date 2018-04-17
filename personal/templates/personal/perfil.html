@@ -340,7 +340,7 @@
                 <!-- Modal content-->
                 <div class="modal-content">           
                     <div class="modal-body" style="padding:40px 50px;">                
-                            <form class="form-signin">
+                            <form class="form-signin" method='POST' enctype="multipart/form-data" action='{% url 'perfil:editarPerfil'  %}'  target="_blank">  {% csrf_token %}>
                                 <h1 align="center">Usuario</h1>
                                 <br>
                                 
@@ -352,8 +352,8 @@
                                         </div>
                                         <div align="right" style="padding-top:10px; padding-right:10px">
                                                 <span class="btn btn-default btn-file">
-                                                    <span class="fileinput-new">Subir Imagen <span class="glyphicon glyphicon-upload" aria-hidden="true"></span></span>
-                                                    <span class="fileinput-exists">Cambiar <span class="glyphicon glyphicon-upload" aria-hidden="true"></span></span>
+                                                    <span class="fileinput-new">Subir Imagen <span class="glyphicon glyphicon-upload" aria-hidden="true"></span><input type="file" id="archivo" name="archivo"></span>
+                                                    <span class="fileinput-exists">Cambiar <span class="glyphicon glyphicon-upload" aria-hidden="true"></span><input type="file" id="archivoC" name="archivoC"></span>
                                                     <input type="file" name="image">
                                                 </span>
                                                 <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
@@ -362,15 +362,15 @@
 
                                 
                                 <br>
-                                <input type="text" id="input" class="form-control" placeholder="Nombre..." required autofocus>
+                                <input type="text" id="input"  name="nombre" class="form-control" placeholder="Nombre..." required autofocus>
                                 <br>
-                                <input type="text" id="input" class="form-control" placeholder="Titulo...">
+                                <input type="text" id="input" name="titulo" class="form-control" placeholder="Titulo...">
                                 <br>
-                                <input type="text" id="input" class="form-control" placeholder="Puesto Actual..." >
+                                <input type="text" id="input" name="puesto_actual" class="form-control" placeholder="Puesto Actual..." >
                                 <br>
-                                <input type="text" id="input" class="form-control" placeholder="Lugar de trabajo.." >
+                                <input type="text" id="input" name="lugar_trabajo" class="form-control" placeholder="Lugar de trabajo.." >
                                 <br>
-                                <input type="email" id="input" class="form-control" placeholder="Correo..." required autofocus>
+                                <input type="email" id="input" name="correo_electronico" class="form-control" placeholder="Correo..." required autofocus>
                                 <br>
                                 <button class="btn btn-lg btn-primary btn-block" type="submit">Editar</button>
                           </form>      

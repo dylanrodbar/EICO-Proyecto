@@ -20,6 +20,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^inicio/', include('home.urls', namespace="home")),
     url(r'^foro/', include('forum.urls', namespace="forum")),
-    url(r'^calendario/', include('eicocalendar.urls')),
-    url(r'^perfil/', include('personal.urls')),
+    url(r'^calendario/', include('eicocalendar.urls', namespace="calendario")),
+    url(r'^perfil/', include('personal.urls', namespace="perfil")),
 ]
