@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.http import HttpResponse, HttpResponseRedirect
@@ -94,15 +96,21 @@ def admin(request):
     cur.callproc('obtener_sitios_interes', [])
     sitios = cur.fetchall()
 
+
     cur.nextset()
 
     cur.callproc('obtener_servicios', [])
     servicios = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_calendario', [])
+    calendarios = cur.fetchall()
     cur.close
 
     context = {
         'sitiosinteres': sitios,
         'servicios': servicios,
+        'calendarios': calendarios,
         'id': 0
     }
     return HttpResponse(template.render(context, request))
@@ -151,7 +159,6 @@ def editarSitio(request, id):
 
 
 def editarSitioAux(request, id):
-    print("hello")
     template = loader.get_template('home/editarsitio.html')
     titulo = request.POST.get('titulo')
     contenido = request.POST.get('descripcion')
@@ -166,6 +173,50 @@ def eliminarSitio(request, id):
     context = {}
     cur = connection.cursor()
     cur.callproc('eliminar_sitio_interes', [id])
+    cur.close
+
+    return HttpResponseRedirect(reverse('home:admin'))
+
+
+def agregarEvento(request):
+    template = loader.get_template('home/admin.html')
+    fecha = request.POST.get('fecha-evento')
+    nombre = request.POST.get('nombre-evento')
+    descripcion = request.POST.get('descripcion-evento')
+
+
+    cur = connection.cursor()
+    cur.callproc('insertar_calendario', [nombre, descripcion, fecha])
+    cur.close
+    return HttpResponseRedirect(reverse('home:admin'))
+
+
+def editarEvento(request, id):
+    template = loader.get_template('home/editarcalendario.html')
+    context = {
+        'id': id
+    }
+    return HttpResponse(template.render(context, request))
+
+def editarEventoAux(request, id):
+    template = loader.get_template('home/editarsitio.html')
+
+    fecha = request.POST.get('fecha-evento')
+    nombre = request.POST.get('nombre-evento')
+    descripcion = request.POST.get('descripcion-evento')
+
+
+    cur = connection.cursor()
+    cur.callproc('editar_calendario', [id, nombre, descripcion, fecha])
+    cur.close
+    return HttpResponseRedirect(reverse('home:admin'))
+
+
+def eliminarEvento(request, id):
+    template = loader.get_template('home/admin.html')
+    context = {}
+    cur = connection.cursor()
+    cur.callproc('eliminar_calendario', [id])
     cur.close
 
     return HttpResponseRedirect(reverse('home:admin'))

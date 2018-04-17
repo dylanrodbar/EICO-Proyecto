@@ -151,44 +151,26 @@
             <div id="list" style="height: auto; max-height: 450px; overflow-x: hidden;">
                 <li class="list-group-item">
                 <div class="row">
+                {% for calendario in calendarios %}
+
                     <div class="col-md-8">
                             <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">List group item heading</h5>
-                                    <small>10 abril 2018</small>
+                                    <h5 class="mb-1">{{ calendario.1 }}</h5>
+                                    <small>{{ calendario.3|date:"d-m-Y" }}</small>
                             </div>
                     </div>
 
                     <div class="col-md-4" align= "right">
-                            <a href="#" data-toggle="modal" data-target="#EditarEvento"><button type="submit" class="btn btn-default btn-sm" >
+                            <a href="admin/editarEvento/{{calendario.0}}" data-toggle="modal" data-target="#EditarEvento"><button type="submit" class="btn btn-default btn-sm" >
                                     <span class="glyphicon glyphicon-pencil"></span></button></a>
-                            <button type="submit" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></button>
+                            <a type="submit" href="admin/eliminarEvento/{{calendario.0}}" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></a>
+
                     </div>
+                {% endfor %}
+
 
                 </li>
-                <li class="list-group-item">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <small>10 abril 2018</small>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">List group item heading</h5>
-                            <small>10 abril 2018</small>
-                        </div>
-                </li>
-                <li class="list-group-item">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">List group item heading</h5>
-                            <small>10 abril 2018</small>
-                        </div>
-                </li>
-                <li class="list-group-item">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">List group item heading</h5>
-                            <small>10 abril 2018</small>
-                        </div>
-                </li>
+
                     
             </div>
         </ul>
@@ -280,20 +262,20 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body" style="padding:40px 50px;">
-                        <form class="form-signin">
+                        <form class="form-signin" method='POST' action='{% url 'home:agregarEvento'  %}'  > {% csrf_token %}>>
                             <h1 align="center">Calendario</h1>
                             <br>
                             <h4>Ingrese una fecha, titulo y descripcion</h4>
                             <br>
-                            <input type="date" name="dateAdd" required>
+                            <input type="date" name="fecha-evento" required>
                             <br>
                             <br>
                             <label for="EditNameSitio" class="sr-only">Correo</label>
-                            <input type="text" id="input" class="form-control" placeholder="Nombre..." required autofocus>
+                            <input type="text" id="input" name="nombre-evento" class="form-control" placeholder="Nombre..." required autofocus>
                             <br>
                             <div class="form-group">
                                     <label for="EditDescriptionSitio"></label>
-                                    <textarea class="form-control" rows="5" id="comment" placeholder="Descripcion..."></textarea>
+                                    <textarea class="form-control" rows="5" id="comment" name="descripcion-evento" placeholder="Descripcion..."></textarea>
                             </div>
                             <br>
                             <button class="btn btn-lg btn-primary btn-block" type="submit">Agregar</button>
@@ -304,26 +286,25 @@
     </div>
 
      <!-- Modal Editar Evento -->
-
-     <div class="modal fade" id="EditarEvento" role="dialog" style="padding-top:150px;">
+    <div class="modal fade" id="EditarEvento" role="dialog" style="padding-top:150px;">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-body" style="padding:40px 50px;">
-                            <form class="form-signin">
+                            <form class="form-signin" method='POST' action='{% url 'home:editarEventoAux' id %}'  > {% csrf_token %}>
                                 <h1 align="center">Calendario</h1>
                                 <br>
                                 <h4>Ingrese la nueva fecha, titulo y descripcion</h4>
                                 <br>
-                                <input type="date" name="dateEdit" required>
+                                <input type="date" name="fecha-evento" required>
                                 <br>
                                 <br>
                                 <label for="EditNameSitio" class="sr-only">Correo</label>
-                                <input type="text" id="input" class="form-control" placeholder="Nombre..." required autofocus>
+                                <input type="text" id="input" class="form-control" name="nombre-evento" placeholder="Nombre..." required autofocus>
                                 <br>
                                 <div class="form-group">
                                         <label for="EditDescriptionSitio"></label>
-                                        <textarea class="form-control" rows="5" id="comment" placeholder="Descripcion..."></textarea>
+                                        <textarea class="form-control" rows="5" name = "descripcion-evento" id="comment" placeholder="Descripcion..."></textarea>
                                 </div>
                                 <br>
                                 <button class="btn btn-lg btn-primary btn-block" type="submit">Editar</button>
@@ -332,6 +313,7 @@
                 </div>
             </div>
         </div>
+
 
 
 {% endblock %}

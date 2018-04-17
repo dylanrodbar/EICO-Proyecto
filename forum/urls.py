@@ -17,6 +17,8 @@ urlpatterns = [
 
                 url(r'^editar/(?P<id>[0-9]+)/$', views.editNoticia, name="editNoticia"),
 
+                url(r'^eliminar/(?P<id>[0-9]+)/$', views.deleteNoticia, name="deleteNoticia"),
+
                 url(r'^ver/(?P<id>[0-9]+)/$', views.viewNoticia, name="viewNoticia"),
                               
             ]

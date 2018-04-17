@@ -18,7 +18,10 @@ urlpatterns = [
     url(r'^admin/editar/(?P<id>[0-9]+)$', views.editarSitio, name='editarSitio'),
     url(r'^admin/editarAux/(?P<id>[0-9]+)$', views.editarSitioAux, name='editarSitioAux'),
     url(r'^admin/eliminar/(?P<id>[0-9]+)$', views.eliminarSitio, name='eliminarSitio'),
-
+    url(r'^admin/agregarEvento$', views.agregarEvento, name='agregarEvento'),
+    url(r'^admin/editarEvento/(?P<id>[0-9]+)$', views.editarEvento, name='editarEvento'),
+    url(r'^admin/editarEventoAux/(?P<id>[0-9]+)$', views.editarEventoAux, name='editarEventoAux'),
+    url(r'^admin/eliminarEvento/(?P<id>[0-9]+)$', views.eliminarEvento, name='eliminarEvento'),
 
     
     ]

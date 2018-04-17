@@ -79,30 +79,17 @@
     <h3>29 ABRIL 2018 </h3>
     <br>
     <div class="list-group">
+        {% for calendario in calendarios %}
+
             <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" style="background-color:#2471A3; color:white;">
               <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small>3 days ago</small>
+                <h5 class="mb-1">{{ calendario.1 }}</h5>
+                <small>{{ calendario.3|date:"d-m-Y" }}</small>
               </div>
-              <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-              <small>Donec id elit non mi porta.</small>
+              <p class="mb-1">{{ calendario.2 }}</p>
+              <small>{{ calendario.2 }}</small>
             </a>
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small class="text-muted">3 days ago</small>
-              </div>
-              <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-              <small class="text-muted">Donec id elit non mi porta.</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small class="text-muted">3 days ago</small>
-              </div>
-              <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-              <small class="text-muted">Donec id elit non mi porta.</small>
-            </a>
+        {% endfor %}
     </div
 
 </div>

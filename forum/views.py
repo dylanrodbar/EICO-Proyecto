@@ -124,4 +124,15 @@ def changePost(request, id):
     cur.callproc('editar_publicacion', [id, titulo, descripcion, embed_link_video, imagen_subida_url])
     cur.close
 
+
+
+
+def deleteNoticia(request, id):
+    template = loader.get_template('forum/editarNoticia.html')
+
+    cur = connection.cursor()
+    cur.callproc('eliminar_publicacion', [id,])
+    cur.close
+
     return HttpResponseRedirect(reverse('perfil:viewProfile'))
+
