@@ -24,12 +24,18 @@ def viewProfile(request):
     cur = connection.cursor()
     cur.callproc('obtener_usuario_id', [id_usuario,])
     datos_usuario = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_publicaciones_usuario', [id_usuario, ])
+    publicaciones_usuario = cur.fetchall()
+
     cur.close
 
     datos_usuario_detalle = datos_usuario[0]
 
     context = {
-        'datos_usuario': datos_usuario_detalle
+        'datos_usuario': datos_usuario_detalle,
+        'publicaciones_usuario': publicaciones_usuario,
     }
 
     return HttpResponse(template.render(context, request))

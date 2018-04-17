@@ -94,5 +94,34 @@ def viewNoticia(request, id):
 
 
 
-def editNoticia(request):
-	return render(request, 'forum/editarNoticia.html')
+def editNoticia(request, id):
+    template = loader.get_template('forum/editarNoticia.html')
+    context = {
+        "id": id,
+
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def changePost(request, id):
+    template = loader.get_template('forum/editarNoticia.html')
+
+    titulo = request.POST.get('titulo')
+    descripcion = request.POST.get('descripcion')
+    link_video = request.POST.get('video')
+    file = request.FILES.get("archivo")
+
+    embed_link_video = link_video.replace("watch?v=", "embed/")
+
+    user = int(request.session['Usuario'])
+
+    imagen_subida = cloudinary.uploader.upload(file)
+
+    # obtiene la referencia que va a permitir mostrar la imagen en la aplicación
+    imagen_subida_url = imagen_subida["secure_url"]
+
+    cur = connection.cursor()
+    cur.callproc('editar_publicacion', [id, titulo, descripcion, embed_link_video, imagen_subida_url])
+    cur.close
+
+    return HttpResponseRedirect(reverse('perfil:viewProfile'))

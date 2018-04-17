@@ -13,7 +13,9 @@ urlpatterns = [
 
                 url(r'^insertarPost/$', views.insertarPost, name='insertarPost'),
 
-                url(r'^editar/$', views.editNoticia, name='editNoticia'),
+                url(r'^changePost/(?P<id>[0-9]+)/$', views.changePost, name='changePost'),
+
+                url(r'^editar/(?P<id>[0-9]+)/$', views.editNoticia, name="editNoticia"),
 
                 url(r'^ver/(?P<id>[0-9]+)/$', views.viewNoticia, name="viewNoticia"),
                               
