@@ -18,12 +18,17 @@ def viewEscuela(request):
     cur = connection.cursor()
     cur.callproc('obtener_publicaciones_escuela', [])
     noticias = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_top_publicaciones_relevantes', [])
+    noticias_relevantes = cur.fetchall()
     cur.close
 
     print(noticias)
     
     context = {
-   	    'noticias': noticias 
+   	    'noticias': noticias,
+        'noticiasrelevantes': noticias_relevantes
     }
     return HttpResponse(template.render(context, request))
 

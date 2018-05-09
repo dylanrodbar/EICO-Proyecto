@@ -202,12 +202,14 @@ delimiter $$
 create procedure obtener_publicaciones_escuela()
 
 begin
-	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
-    where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado';
+	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario, count(*) as 'Relevantes' from Publicacion p, Usuario u, Tipo_Usuario tu, Tipo_Calificacion tp, CalificacionXPublicacion cp
+    where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado' and cp.publicacion_fk = p.id and tp.id = cp.calificacion_fk and tp.nombre = 'Relevante'
+    group by p.id;
 end $$
 delimiter ;
 
-
+call obtener_publicaciones_escuela
+drop procedure obtener_publicaciones_escuela
 
 
 
@@ -321,5 +323,51 @@ begin
 end $$
 delimiter ;
 
+
+delimiter $$
+create procedure obtener_relevante_publicacion(id int)
+
+begin
+		select count(*) as 'Relevantes' from Tipo_Calificacion tp, CalificacionXPublicacion cp
+        where cp.publicacion_fk = id and tp.id = cp.calificacion_fk and tp.nombre = 'Relevante';
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure obtener_indiferente_publicacion(id int)
+
+begin
+		select count(*) as 'Indiferentes' from Tipo_Calificacion tp, CalificacionXPublicacion cp
+        where cp.publicacion_fk = id and tp.id = cp.calificacion_fk and tp.nombre = 'Indiferente';
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure obtener_emocionante_publicacion(id int)
+
+begin
+		select count(*) as 'Emocionantes' from Tipo_Calificacion tp, CalificacionXPublicacion cp
+        where cp.publicacion_fk = id and tp.id = cp.calificacion_fk and tp.nombre = 'Emocionante';
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure obtener_top_publicaciones_relevantes()
+
+begin
+		select count(*) as 'Relevantes', p.titulo from Tipo_Calificacion tp, CalificacionXPublicacion cp, Publicacion p
+        where cp.publicacion_fk = p.id and tp.id = cp.calificacion_fk and tp.nombre = 'Relevante'
+        group by p.id
+        order by Relevantes
+        limit 5;
+         
+end $$
+delimiter ;
+
+drop procedure obtener_top_publicaciones_relevantes
+call obtener_top_publicaciones_relevantes();
 
 
