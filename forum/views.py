@@ -24,7 +24,6 @@ def viewEscuela(request):
     noticias_relevantes = cur.fetchall()
     cur.close
 
-    print(noticias)
     
     context = {
    	    'noticias': noticias,
@@ -74,6 +73,8 @@ def insertarPost(request):
     #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
     imagen_subida_url = imagen_subida["secure_url"]
 
+    print("imagen_subida_url")
+    print(imagen_subida_url)
     cur = connection.cursor()
     cur.callproc('insertar_publicacion', [titulo, descripcion, embed_link_video, imagen_subida_url, user])
     cur.close
