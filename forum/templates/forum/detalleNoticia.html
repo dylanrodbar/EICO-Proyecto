@@ -13,15 +13,21 @@
 
                 <div class="text-right">
                     <div class="row" style="margin-top:10px; margin-right:10px;">
-                            <button class="btn" style="margin-bottom:10px;"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Relevante
-                                <span class="badge">10</span>
-                            </button>
-                            <button class="btn" style="margin-bottom:10px;"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Indiferente
-                                <span class="badge">2</span>
-                            </button>   
-                            <button class="btn" style="margin-bottom:10px;"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Emocionante
-                                <span class="badge">6</span>
-                            </button>   
+                            <a href="/foro/noticia/calificarrelevante/{{id}}">
+                                <button class="btn" style="margin-bottom:10px;"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Relevante
+                                    <span class="badge">{{relevantes.0}}</span>
+                                </button>
+                            </a>
+                            <a href="/foro/noticia/calificarindiferente/{{id}}">
+                                <button class="btn" style="margin-bottom:10px;"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Indiferente
+                                    <span class="badge">{{indiferentes.0}}</span>
+                                </button>
+                            </a>
+                            <a href="/foro/noticia/calificaremocionante/{{id}}">   
+                                <button class="btn" style="margin-bottom:10px;"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Emocionante
+                                    <span class="badge">{{emocionantes.0}}</span>
+                                </button>
+                            </a>   
                     </div>   
                  </div>             
                 
@@ -56,6 +62,7 @@
                     <textarea class="form-control" name="comentario" rows="6" style="resize: none;"required></textarea>
                     </div>
                     <div align="right">
+                        
                             <button type="submit" class="btn" style="background-color:#2471A3; color:white;">Enviar</button>
                     </div>
                 </form>

@@ -73,6 +73,7 @@ def insertarPost(request):
     cur.callproc('insertar_publicacion', [titulo, descripcion, embed_link_video, imagen_subida_url, user])
     cur.close
 
+    
     return HttpResponseRedirect(reverse('forum:viewEscuela'))
 
 
@@ -86,14 +87,37 @@ def viewNoticia(request, id):
 
     cur.nextset()
 
+
     cur.callproc('obtener_comentarios_publicacion', [id, ])
     comentarios = cur.fetchall()
 
+    cur.nextset()
+
+    cur.callproc('obtener_relevante_publicacion', [id, ])
+
+    relevantes = cur.fetchall()
+
+    cur.nextset()
+
+    cur.callproc('obtener_indiferente_publicacion', [id, ])
+
+    indiferentes = cur.fetchall()
+
+    cur.nextset()
+
+    cur.callproc('obtener_emocionante_publicacion', [id, ])
+
+    emocionantes = cur.fetchall()
+
     cur.close()
 
+    
     context = {
         'publicacion': publicacion[0],
         'comentarios': comentarios,
+        'relevantes': relevantes[0],
+        'indiferentes': indiferentes[0],
+        'emocionantes': emocionantes[0],
         'id': id
     }
 
@@ -150,6 +174,7 @@ def deleteNoticia(request, id):
 def insertarComentario(request, id):
     template = loader.get_template('forum/detalleNoticia.html')
 
+    print("ENTRA A COMENTARIOS")
     id_usuario = int(request.session['Usuario'])
     id_publicacion = id
     comentario = request.POST.get('comentario')
@@ -158,4 +183,77 @@ def insertarComentario(request, id):
     cur.callproc('insertar_comentario_publicacion', [comentario, id_usuario, id_publicacion])
     cur.close
 
+    #return HttpResponseRedirect("") 
+    #redirect_to = reverse('forum:viewNoticia', kwargs={'id': id})
+    #return redirect(redirect_to)
+    #return HttpResponseRedirect(viewNoticia, id)
     return HttpResponseRedirect(reverse('forum:viewNoticia', args=[id]))
+
+def calificarNoticiaRelevante(request, id):
+    template = loader.get_template('forum/detalleNoticia.html')
+
+    id_usuario = int(request.session['Usuario'])
+    id_publicacion = id
+    calificacion = "Relevante"
+
+    cur = connection.cursor()
+    cur.callproc('obtener_id_calificacion', [calificacion,])
+    id_calificacion_tupla = cur.fetchall()
+    
+
+    id_calificacion = id_calificacion_tupla[0][0]
+
+    
+    cur.nextset()
+    cur.callproc('calificar_publicacion', [id_publicacion,id_calificacion,id_usuario])
+
+    cur.close
+
+    return HttpResponseRedirect(reverse('forum:viewNoticia', args=[id])) 
+
+
+def calificarNoticiaIndiferente(request, id):
+    template = loader.get_template('forum/detalleNoticia.html')
+
+    id_usuario = int(request.session['Usuario'])
+    id_publicacion = id
+    calificacion = "Indiferente"
+
+    cur = connection.cursor()
+    cur.callproc('obtener_id_calificacion', [calificacion,])
+    id_calificacion_tupla = cur.fetchall()
+    
+
+    id_calificacion = id_calificacion_tupla[0][0]
+
+    
+    cur.nextset()
+    cur.callproc('calificar_publicacion', [id_publicacion,id_calificacion,id_usuario])
+
+    cur.close
+
+    return HttpResponseRedirect(reverse('forum:viewNoticia', args=[id])) 
+
+
+def calificarNoticiaEmocionante(request, id):
+    template = loader.get_template('forum/detalleNoticia.html')
+
+    id_usuario = int(request.session['Usuario'])
+    id_publicacion = id
+    calificacion = "Emocionante"
+
+    cur = connection.cursor()
+    cur.callproc('obtener_id_calificacion', [calificacion,])
+    id_calificacion_tupla = cur.fetchall()
+    
+
+    id_calificacion = id_calificacion_tupla[0][0]
+
+    
+    cur.nextset()
+    cur.callproc('calificar_publicacion', [id_publicacion,id_calificacion,id_usuario])
+
+    cur.close
+
+    return HttpResponseRedirect(reverse('forum:viewNoticia', args=[id])) 
+    

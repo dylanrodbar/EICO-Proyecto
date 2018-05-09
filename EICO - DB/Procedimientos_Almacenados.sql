@@ -111,13 +111,22 @@ delimiter ;
 #r
 delimiter $$
 
+
+delimiter $$
+create procedure obtener_calendario_fecha(fecha date)
+begin
+	select * from Calendario where Calendario.fecha = fecha;
+end $$
+delimiter ;
+
+#r
+delimiter $$
 create procedure obtener_calendario()
 begin
 	select * from Calendario;
 end $$
 delimiter ;
 
-call obtener_calendario
 
 #u
 delimiter $$
@@ -246,7 +255,7 @@ delimiter $$
 create procedure obtener_publicacion_id(id int)
 
 begin
-	select p.titulo, p.descripcion, p.link_video, p.fecha, p.media, u.nombre_usuario from Publicacion p, Usuario u
+	select p.titulo, p.descripcion, p.link_video, p.fecha, p.media, u.nombre_usuario from Publicacion p, Usuario u 
     where p.usuario_fk = u.id and p.id = id;
 end $$
 delimiter ;
@@ -295,9 +304,22 @@ begin
 end $$
 delimiter ;
 
+delimiter $$
+create procedure obtener_id_calificacion(calificacion text)
+
+begin
+		select tp.id from Tipo_Calificacion tp where tp.nombre = calificacion;
+end $$
+delimiter ;
 
 
+delimiter $$
+create procedure calificar_publicacion(id int, calificacion int, usuario int)
 
+begin
+		insert into CalificacionXPublicacion(publicacion_fk, calificacion_fk, usuario_fk) values (id, calificacion, usuario);
+end $$
+delimiter ;
 
 
 
