@@ -87,6 +87,7 @@ class Calendario(models.Model):
 class Calificacionxpublicacion(models.Model):
     publicacion_fk = models.ForeignKey('Publicacion', models.DO_NOTHING, db_column='publicacion_fk', blank=True, null=True)
     calificacion_fk = models.ForeignKey('TipoCalificacion', models.DO_NOTHING, db_column='calificacion_fk', blank=True, null=True)
+    usuario_fk = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='usuario_fk', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -95,8 +96,8 @@ class Calificacionxpublicacion(models.Model):
 
 class Comentario(models.Model):
     descripcion = models.TextField(blank=True, null=True)
-    fecha = models.DateField(blank=True, null=True)
     usuario_fk = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='usuario_fk', blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
     publicacion_fk = models.ForeignKey('Publicacion', models.DO_NOTHING, db_column='publicacion_fk', blank=True, null=True)
 
     class Meta:

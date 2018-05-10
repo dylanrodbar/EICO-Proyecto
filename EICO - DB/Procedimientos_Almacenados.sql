@@ -202,14 +202,13 @@ delimiter $$
 create procedure obtener_publicaciones_escuela()
 
 begin
-	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario, count(*) as 'Relevantes' from Publicacion p, Usuario u, Tipo_Usuario tu, Tipo_Calificacion tp, CalificacionXPublicacion cp
-    where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado' and cp.publicacion_fk = p.id and tp.id = cp.calificacion_fk and tp.nombre = 'Relevante'
-    group by p.id;
+	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
+    where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado';
 end $$
 delimiter ;
 
-call obtener_publicaciones_escuela
-drop procedure obtener_publicaciones_escuela
+
+
 
 
 
@@ -324,6 +323,8 @@ end $$
 delimiter ;
 
 
+
+
 delimiter $$
 create procedure obtener_relevante_publicacion(id int)
 
@@ -358,7 +359,7 @@ delimiter $$
 create procedure obtener_top_publicaciones_relevantes()
 
 begin
-		select count(*) as 'Relevantes', p.titulo from Tipo_Calificacion tp, CalificacionXPublicacion cp, Publicacion p
+		select count(*) as 'Relevantes', substring(p.titulo, 1, 45),  p.media, substring(p.descripcion, 1, 45) from Tipo_Calificacion tp, CalificacionXPublicacion cp, Publicacion p
         where cp.publicacion_fk = p.id and tp.id = cp.calificacion_fk and tp.nombre = 'Relevante'
         group by p.id
         order by Relevantes
@@ -366,8 +367,5 @@ begin
          
 end $$
 delimiter ;
-
-drop procedure obtener_top_publicaciones_relevantes
-call obtener_top_publicaciones_relevantes();
 
 

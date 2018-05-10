@@ -1,7 +1,7 @@
 create database EICO;
 use EICO;
 
-#drop database EICO;
+drop database EICO;
 
 create table if not exists Sitio_Interes(
 	id int auto_increment,
@@ -149,6 +149,7 @@ create table if not exists Comentario(
 	id int auto_increment,
     descripcion text,
     usuario_fk int,
+    fecha date,
     publicacion_fk int,
     
     primary key(id),
@@ -167,6 +168,8 @@ create table if not exists CalificacionXPublicacion(
 );
 
 
+
+
 #create table if not exists MediaXPublicacion(
 #	publicacion_fk int,
 #    media_fk int,
@@ -182,3 +185,4 @@ create table if not exists CalificacionXPublicacion(
 #    foreign key(usuario_fk) references Usuario(id),
 #    foreign key(formacion_fk) references Formacion(id)
 #);
+

@@ -12,6 +12,22 @@ cloudinary.config(
     api_secret = 'z-7k70XpvP1dl1ZdiqVF0olXp7A'
 )
 
+def convertir_tupla_lista(tupla):
+    lista = []
+    largo = len(tupla)
+    for i in range(largo):
+        lista.append(list(tupla[i]))
+    return lista
+
+
+def convertir_lista_tupla(lista):
+    largo = len(lista)
+    for i in range(largo):
+        lista[i] = tuple(lista[i])
+    lista = tuple(lista)
+    return lista
+    
+
 def viewEscuela(request):
     template = loader.get_template('forum/escuela.html')
 
@@ -22,6 +38,26 @@ def viewEscuela(request):
     cur.nextset()
     cur.callproc('obtener_top_publicaciones_relevantes', [])
     noticias_relevantes = cur.fetchall()
+
+    lista = convertir_tupla_lista(noticias)
+
+    largo_noticias = len(lista)
+    for i in range(largo_noticias):
+        indice = lista[i]
+        id_c = indice[0]
+        print(id_c)
+        cur.nextset()
+        cur.callproc('obtener_relevante_publicacion', [id_c])
+        cantidad_relevantes = cur.fetchall()
+        print(cantidad_relevantes)
+        elemento = cantidad_relevantes[0][0]
+        lista[i].append(elemento)
+
+    noticias = convertir_lista_tupla(lista)
+
+        
+        
+
     cur.close
 
     
