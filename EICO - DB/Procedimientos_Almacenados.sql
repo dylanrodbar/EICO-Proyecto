@@ -368,4 +368,38 @@ begin
 end $$
 delimiter ;
 
+delimiter $$
+create procedure insertar_experiencia_o_proyecto(nombre varchar(200), lugar_trabajo varchar(200), fecha_inicio date, fecha_final date, descripcion text, usuario_fk int)
+begin
+	insert into Experiencia_O_Proyecto(nombre, lugar_trabajo, fecha_inicio, fecha_final, descripcion, usuario_fk) values (nombre, lugar_trabajo, fecha_inicio, fecha_final, descripcion, usuario_fk); 
+end $$
+delimiter ;
+
+delimiter $$
+create procedure obtener_experiencias_o_proyectos_usuario(usuario int)
+begin
+	select * from Experiencia_O_Proyecto ep where ep.usuario_fk = usuario; 
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure insertar_educacion(nombre_titulo varchar(200), centro_educativo varchar(200), fecha_inicio date, fecha_final date, descripcion text, usuario_fk int)
+begin
+	insert into Educacion(nombre_titulo, centro_educativo, fecha_inicio, fecha_final, descripcion, usuario_fk) values (nombre_titulo, centro_educativo, fecha_inicio, fecha_final, descripcion, usuario_fk); 
+end $$
+delimiter ;
+
+
+
+delimiter $$
+create procedure obtener_educacion_usuario(usuario int)
+begin
+	select * from Educacion ep where ep.usuario_fk = usuario; 
+end $$
+delimiter ;
+
+call obtener_educacion_usuario(1)
+
+select * from Experiencia_O_Proyecto
 
