@@ -60,7 +60,7 @@
                 <ul class="list-group">
                     <div id="list" style="height: auto; max-height: 200px; overflow-x: hidden;">
 
-                    {% for i in "x"|rjust:"5" %}
+                    {% for i in experiencia %}
                     <li class="list-group-item" style="border: none">
                         <div class="media">
                             <div class="media-left">
@@ -71,7 +71,7 @@
                             <div class="media-body">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <h4 class="media-heading">Puesto de trabajo / Nombre Proyecto <small><i>10 abril 2018</i></small></h4>
+                                        <h4 class="media-heading">Puesto de trabajo / Nombre Proyecto <small><i>{{ i.3|date:"d-m-Y" }}</i></small></h4>
                                     </div>
                                     <div class="col-md-4" align="right">
                                         <a href="#" data-toggle="modal" data-target="#EditarExperiencia">
@@ -81,8 +81,8 @@
                                         </a>
                                     </div>
                                 </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+                                <p>
+                                    {{i.1}}
                                 </p>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                 <ul class="list-group">
                     <div id="list" style="height: auto; max-height: 200px; overflow-x: hidden;">
 
-                    {% for i in "x"|rjust:"5" %}
+                    {% for i in educacion %}
                     <li class="list-group-item" style="border: none">
                         <div class="media">
                             <div class="media-left">
@@ -127,7 +127,7 @@
                             <div class="media-body">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <h4 class="media-heading">Escuela - Titulo <small><i>10 abril 2018</i></small></h4>
+                                        <h4 class="media-heading">Escuela - Titulo <small><i>{{ i.3|date:"d-m-Y" }}</i></small></h4>
                                     </div>
                                     <div class="col-md-4" align="right">
                                         <a href="#" data-toggle="modal" data-target="#EditarEducacion">
@@ -137,8 +137,8 @@
                                         </a>
                                     </div>
                                 </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+                                <p>
+                                    {{i.1}}
                                 </p>
                             </div>
                         </div>
@@ -218,21 +218,21 @@
             <!-- Modal content-->
             <div class="modal-content">           
                 <div class="modal-body" style="padding:40px 50px;">                
-                        <form class="form-signin">
+                        <form class="form-signin" method='POST' enctype="multipart/form-data" action='{% url 'perfil:agregarExperienciaOTrabajo'  %}'  target="_blank">  {% csrf_token %}
                             <h1 align="center">Experiencia</h1>
                             <br>
-                            <input type="text" id="input" class="form-control" placeholder="Nombre del puesto/Nombre proyecto..." required autofocus>
+                            <input type="text" id="input" name="puestoexperiencia" class="form-control" placeholder="Nombre del puesto/Nombre proyecto..." required autofocus>
                             <br>
-                            <input type="text" id="input" class="form-control" placeholder="Lugar de trabajo...">
+                            <input type="text" id="input" name="trabajoexperiencia" class="form-control" placeholder="Lugar de trabajo...">
                             <h5>Inicio</h5>
-                            <input type="date" name="dateAdd" required>
+                            <input type="date" name="finicioexperiencia" required>
                             <br>
                             <h5>Finalizacion</h5>
-                            <input type="date" name="dateAdd" required>
+                            <input type="date" name="ffinalexperiencia" required>
                             <br>
                             <br>
                             <div class="form-group">
-                                    <textarea class="form-control" style="resize: none;" rows="5" id="comment" placeholder="Descripcion..."></textarea>
+                                    <textarea class="form-control" name="descripcionexperiencia" style="resize: none;" rows="5" id="comment" placeholder="Descripcion..."></textarea>
                             </div>
                             <br>
                             <button class="btn btn-lg btn-primary btn-block" type="submit">Agregar</button>
@@ -251,18 +251,18 @@
                         <form class="form-signin">
                             <h1 align="center">Editar Experiencia</h1>
                             <br>
-                            <input type="text" id="input" class="form-control" placeholder="Nombre del puesto/Nombre proyecto..." required autofocus>
+                            <input type="text" id="input" name="puesto" class="form-control" placeholder="Nombre del puesto/Nombre proyecto..." required autofocus>
                             <br>
-                            <input type="text" id="input" class="form-control" placeholder="Lugar de trabajo...">
+                            <input type="text" id="input" name="trabajo" class="form-control" placeholder="Lugar de trabajo...">
                             <h5>Inicio</h5>
-                            <input type="date" name="dateAdd" required>
+                            <input type="date" name="finicio" required>
                             <br>
                             <h5>Finalizacion</h5>
-                            <input type="date" name="dateAdd" required>
+                            <input type="date" name="ffinal" required>
                             <br>
                             <br>
                             <div class="form-group">
-                                    <textarea class="form-control" style="resize: none;" rows="5" id="comment" placeholder="Descripcion..."></textarea>
+                                    <textarea class="form-control" name="descripcion" style="resize: none;" rows="5" id="comment" placeholder="Descripcion..."></textarea>
                             </div>
                             <br>
                             <button class="btn btn-lg btn-primary btn-block" type="submit">Editar</button>
@@ -279,21 +279,21 @@
             <!-- Modal content-->
             <div class="modal-content">           
                 <div class="modal-body" style="padding:40px 50px;">                
-                        <form class="form-signin">
+                        <form class="form-signin" enctype="multipart/form-data" method="POST" action='{% url 'perfil:agregarEducacion'  %}'  target="_blank">  {% csrf_token %}
                             <h1 align="center">Educacion</h1>
                             <br>
-                            <input type="text" id="input" class="form-control" placeholder="Nombre del titulo..." required autofocus>
+                            <input type="text" id="input" name="tituloeducacion" class="form-control" placeholder="Nombre del titulo..." required autofocus>
                             <br>
-                            <input type="text" id="input" class="form-control" placeholder="Centro educativo..." required autofocus>
+                            <input type="text" id="input" name="centroeducativoeducacion" class="form-control" placeholder="Centro educativo..." required autofocus>
                             <h5>Inicio</h5>
-                            <input type="date" name="dateAdd" required>
+                            <input type="date" name="finicioeducacion" required>
                             <br>
                             <h5>Finalizacion</h5>
-                            <input type="date" name="dateAdd" required>
+                            <input type="date" name="ffinaleducacion" required>
                             <br>
                             <br>
                             <div class="form-group">
-                                    <textarea class="form-control" style="resize: none;" rows="5" id="comment" placeholder="Descripcion..."></textarea>
+                                    <textarea class="form-control" name="descripcioneducacion" style="resize: none;" rows="5" id="comment" placeholder="Descripcion..."></textarea>
                             </div>
                             <br>
                             <button class="btn btn-lg btn-primary btn-block" type="submit">Agregar</button>
