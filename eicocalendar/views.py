@@ -74,7 +74,7 @@ def obtener_datos_calendario(mes, anio):
     numero_dias_mes = obtener_numero_dias_mes(mes, anio)
     suma_dias = dia_inicio_mes + numero_dias_mes
     dia_inicio_negativo = dia_inicio_mes * -1
-    return dia_inicio_mes, numero_dias_mes, suma_dias, dia_inicio_negativo
+    return dia_inicio_mes, numero_dias_mes, suma_dias - 1, dia_inicio_negativo
 
 
 
