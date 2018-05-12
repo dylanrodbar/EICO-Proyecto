@@ -43,9 +43,14 @@
                                                                                 los dias del mes (30) + el dia que empezo el mes (6) = 36 -->
                                 
                     {% if forloop.counter|add:dianegativo == diaactual %}             <!--Como se vera si es la fecha actual -->
-                        <button type="button" class="btn" style="width:70px;background-color:#2471A3; color:white;">
+                        <a href="/calendario/calendario/eventosfecha/{{forloop.counter|add:dianegativo}}/{{mesactualnumero}}/{{anioactual}}/">
+                            <button type="button" class="btn" style="width:70px;background-color:#2471A5; color:white;">
+                        
                     {% else%}
-                        <button type="button" class="btn" style="width:70px;background-color:white; color:#2471A3;">
+                        <a href="/calendario/calendario/eventosfecha/{{forloop.counter|add:dianegativo}}/{{mesactualnumero}}/{{anioactual}}/">
+                        
+                            <button type="button" class="btn" style="width:70px;background-color:white; color:#2471A3;">
+                        
                     {% endif %}
                     
                     {% if forloop.counter|add:dianegativo == 29 %}             <!-- aqui deberia hacer la comparicion si la fecha tiene un evento, en el ejemplo se puso 29
@@ -57,7 +62,7 @@
                             {{ forloop.counter|add:dianegativo}}  </h4>
                     {% endif %}
                                      
-                    </button>
+                    </button></a>
                 {% endif %}  
                 </td> 
 

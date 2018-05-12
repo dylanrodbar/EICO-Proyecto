@@ -105,6 +105,7 @@ def viewCalendar(request):
 	context = {
 		'calendarios': calendarios,
 		'mesactual': nombre_mes,
+		'mesactualnumero': mes_actual,
 		'diainiciomes': dia_inicio_mes,
 		'numero_dias_mes': numero_dias_mes,
 		'sumadias': suma_dias,
@@ -128,6 +129,12 @@ def obtenerSiguienteMes(request):
     request.session['Mes'] = mes
     request.session['Anio'] = anio
 
+    mes_actual, anio_actual, dia_actual = obtener_mes_anio_actual()
+	
+    if mes_actual != mes:
+	    dia_actual = 0
+	
+
     dia_inicio_mes, numero_dias_mes, suma_dias, dia_inicio_negativo = obtener_datos_calendario(mes, anio)
     nombre_mes = obtener_nombre_mes(mes)
 
@@ -140,12 +147,14 @@ def obtenerSiguienteMes(request):
     context = {
 		'calendarios': calendarios,
 		'mesactual': nombre_mes,
+		'mesactualnumero': mes,
 		'diainiciomes': dia_inicio_mes,
 		'numero_dias_mes': numero_dias_mes,
 		'sumadias': suma_dias,
 		'dianegativo': dia_inicio_negativo,
-		'anioactual': anio
-    }
+		'anioactual': anio,
+		'diaactual': dia_actual
+	}
 
     return HttpResponse(template.render(context, request))
 
@@ -164,6 +173,12 @@ def obtenerAnteriorMes(request):
     request.session['Mes'] = mes
     request.session['Anio'] = anio
 
+    mes_actual, anio_actual, dia_actual = obtener_mes_anio_actual()
+
+    if mes_actual != mes:
+	    dia_actual = 0
+	
+
     dia_inicio_mes, numero_dias_mes, suma_dias, dia_inicio_negativo = obtener_datos_calendario(mes, anio)
     nombre_mes = obtener_nombre_mes(mes)
 
@@ -176,12 +191,52 @@ def obtenerAnteriorMes(request):
     context = {
 		'calendarios': calendarios,
 		'mesactual': nombre_mes,
+		'mesactualnumero': mes,
 		'diainiciomes': dia_inicio_mes,
 		'numero_dias_mes': numero_dias_mes,
 		'sumadias': suma_dias,
 		'dianegativo': dia_inicio_negativo,
-		'anioactual': anio
-    }
+		'anioactual': anio,
+		'diaactual': dia_actual
+	}
+
+    return HttpResponse(template.render(context, request))
+    
+
+def obtenerEventosFecha(request, dia, mes, anio):
+    template = loader.get_template('eicoCalendar/calendar.html')
+
+    mes = request.session['Mes']
+    anio = request.session['Anio']
+
+    mes_actual, anio_actual, dia_actual = obtener_mes_anio_actual()
+
+    if mes_actual != mes:
+	    dia_actual = 0
+	
+	
+    dia_inicio_mes, numero_dias_mes, suma_dias, dia_inicio_negativo = obtener_datos_calendario(mes, anio)
+    nombre_mes = obtener_nombre_mes(mes)
+
+	
+
+    cur = connection.cursor()
+    cur.callproc('obtener_calendario', [])
+    calendarios = cur.fetchall()
+    cur.close
+    cur.nextset()
+
+    context = {
+		'calendarios': calendarios,
+		'mesactual': nombre_mes,
+		'mesactualnumero': mes,
+		'diainiciomes': dia_inicio_mes,
+		'numero_dias_mes': numero_dias_mes,
+		'sumadias': suma_dias,
+		'dianegativo': dia_inicio_negativo,
+		'anioactual': anio,
+		'diaactual': dia_actual
+	}
 
     return HttpResponse(template.render(context, request))
     

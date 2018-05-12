@@ -399,7 +399,25 @@ begin
 end $$
 delimiter ;
 
-call obtener_educacion_usuario(1)
 
-select * from Experiencia_O_Proyecto
+
+delimiter $$
+create procedure obtener_calendario_mes_anio(mes int, anio int)
+begin
+	select * from Calendario c where month(fecha) = mes and year(fecha) = anio; 
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure obtener_calendario_dia_mes_anio(dia int, mes int, anio int)
+begin
+	select * from Calendario c where month(fecha) = mes and year(fecha) = anio and day(fecha) = dia; 
+end $$
+delimiter ;
+
+
+
+
+
 
