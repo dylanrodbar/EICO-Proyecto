@@ -3,7 +3,8 @@ from django.views import generic
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.db import connection
-from django.urls import reverse
+#from django.urls import reverse
+from django.core.urlresolvers import reverse
 
 import cloudinary.uploader
 

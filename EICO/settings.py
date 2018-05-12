@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,7 +47,7 @@ INSTALLED_APPS = [
 
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -135,6 +136,8 @@ CLOUDINARY_STORAGE = {
     'API_KEY': '328358331617938',
     'API_SECRET': 'z-7k70XpvP1dl1ZdiqVF0olXp7A'
 }
+
+
 
 
 
