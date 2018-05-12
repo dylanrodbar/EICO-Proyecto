@@ -53,7 +53,9 @@
                         
                     {% endif %}
                     
-                    {% if forloop.counter|add:dianegativo == 29 %}             <!-- aqui deberia hacer la comparicion si la fecha tiene un evento, en el ejemplo se puso 29
+                    
+            
+                    {% if forloop.counter|add:dianegativo in dias %}             <!-- aqui deberia hacer la comparicion si la fecha tiene un evento, en el ejemplo se puso 29
                                                                                     para que se visualice como se veria -->
                         <h4>
                                 {{ forloop.counter|add:dianegativo}} <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> </h4>   <!-- se le debe restar el dia que empezo el mes que este caso es 6-->
@@ -81,7 +83,7 @@
     <br>
 
     <!--esto se mostario al darle click a una fecha con eventos-->
-    <h3>29 ABRIL 2018 </h3>
+    <h3>{{mensajecurso}} </h3>
     <br>
     <div class="list-group">
         {% for calendario in calendarios %}

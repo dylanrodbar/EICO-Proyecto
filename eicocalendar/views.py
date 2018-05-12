@@ -95,12 +95,24 @@ def viewCalendar(request):
         
 
 	cur = connection.cursor()
-	cur.callproc('obtener_calendario', [])
+	cur.callproc('obtener_calendario_mes_anio', [mes_actual, anio_actual])
 	calendarios = cur.fetchall()
 	cur.nextset()
+
+	cur.callproc('obtener_dia_evento', [mes_actual])
+	dias = cur.fetchall()
+	cur.nextset()
+	
+
+
 	cur.close
 
-	cur = connection.cursor() 
+	lista_cursos = []
+
+	for i in range(len(dias)):
+	    lista_cursos.append(dias[i][0])
+	
+	mensaje_cursos = "Cursos para "+nombre_mes+" del "+str(anio_actual) 
 
 	context = {
 		'calendarios': calendarios,
@@ -111,7 +123,9 @@ def viewCalendar(request):
 		'sumadias': suma_dias,
 		'dianegativo': dia_inicio_negativo,
 		'anioactual': anio_actual,
-		'diaactual': dia_actual
+		'diaactual': dia_actual,
+		'mensajecurso': mensaje_cursos,
+		'dias': lista_cursos
 	}
 	return HttpResponse(template.render(context, request))
 
@@ -139,10 +153,26 @@ def obtenerSiguienteMes(request):
     nombre_mes = obtener_nombre_mes(mes)
 
     cur = connection.cursor()
-    cur.callproc('obtener_calendario', [])
+    cur.callproc('obtener_calendario_mes_anio', [mes, anio])
     calendarios = cur.fetchall()
-    cur.close
     cur.nextset()
+
+	
+    cur.callproc('obtener_dia_evento', [mes])
+    dias = cur.fetchall()
+    cur.nextset()
+	
+
+    cur.close
+
+    lista_cursos = []
+
+    for i in range(len(dias)):
+	    lista_cursos.append(dias[i][0])
+	
+    
+    mensaje_cursos = "Cursos para "+nombre_mes+" del "+str(anio) 
+
 
     context = {
 		'calendarios': calendarios,
@@ -153,7 +183,9 @@ def obtenerSiguienteMes(request):
 		'sumadias': suma_dias,
 		'dianegativo': dia_inicio_negativo,
 		'anioactual': anio,
-		'diaactual': dia_actual
+		'diaactual': dia_actual,
+		'mensajecurso': mensaje_cursos,
+		'dias': lista_cursos
 	}
 
     return HttpResponse(template.render(context, request))
@@ -183,10 +215,26 @@ def obtenerAnteriorMes(request):
     nombre_mes = obtener_nombre_mes(mes)
 
     cur = connection.cursor()
-    cur.callproc('obtener_calendario', [])
+    cur.callproc('obtener_calendario_mes_anio', [mes, anio])
     calendarios = cur.fetchall()
-    cur.close
     cur.nextset()
+
+	
+    cur.callproc('obtener_dia_evento', [mes])
+    dias = cur.fetchall()
+	
+    cur.nextset()
+
+
+    cur.close
+
+    lista_cursos = []
+
+    for i in range(len(dias)):
+	    lista_cursos.append(dias[i][0])
+	
+    
+    mensaje_cursos = "Cursos para "+nombre_mes+" del "+str(anio) 
 
     context = {
 		'calendarios': calendarios,
@@ -197,7 +245,9 @@ def obtenerAnteriorMes(request):
 		'sumadias': suma_dias,
 		'dianegativo': dia_inicio_negativo,
 		'anioactual': anio,
-		'diaactual': dia_actual
+		'diaactual': dia_actual,
+		'mensajecurso': mensaje_cursos,
+		'dias': lista_cursos
 	}
 
     return HttpResponse(template.render(context, request))
@@ -221,10 +271,26 @@ def obtenerEventosFecha(request, dia, mes, anio):
 	
 
     cur = connection.cursor()
-    cur.callproc('obtener_calendario', [])
+    cur.callproc('obtener_calendario_dia_mes_anio', [dia, mes, anio])
     calendarios = cur.fetchall()
-    cur.close
+
     cur.nextset()
+
+	
+    cur.callproc('obtener_dia_evento', [mes])
+    dias = cur.fetchall()
+	
+    cur.nextset()
+
+    cur.close
+    
+    lista_cursos = []
+
+    for i in range(len(dias)):
+	    lista_cursos.append(dias[i][0])
+	
+    mensaje_cursos = "Cursos para el "+str(dia)+" de "+nombre_mes+" del "+str(anio) 
+
 
     context = {
 		'calendarios': calendarios,
@@ -235,7 +301,9 @@ def obtenerEventosFecha(request, dia, mes, anio):
 		'sumadias': suma_dias,
 		'dianegativo': dia_inicio_negativo,
 		'anioactual': anio,
-		'diaactual': dia_actual
+		'diaactual': dia_actual,
+		'mensajecurso': mensaje_cursos,
+		'dias': lista_cursos
 	}
 
     return HttpResponse(template.render(context, request))
