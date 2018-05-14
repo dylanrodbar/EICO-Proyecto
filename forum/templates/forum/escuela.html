@@ -9,7 +9,8 @@
             <h1><b>EICO</b></h1>
         </header>
 
-
+        {% if request.session.TipoUsuario == "Estudiante" or request.session.TipoUsuario == "Funcionario" or request.session.TipoUsuario == "Director" %}
+            
         <div class="row">
                 <div class="col-md-8" align="right">      
                     <a href="/foro/escuela/nueva">
@@ -17,6 +18,7 @@
                     </a>
                 </div>
         </div>
+        {% endif %}
 <!-- Grid -->
 <div class="w3-row">
 
