@@ -199,11 +199,35 @@ delimiter ;
 
 
 delimiter $$
-create procedure obtener_publicaciones_escuela()
+create procedure obtener_publicaciones_escuela(numero_fila int)
+
+begin
+	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
+    where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado'
+    limit numero_fila, 4;
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure obtener_todas_publicaciones_escuela()
 
 begin
 	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
     where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado';
+end $$
+delimiter ;
+
+
+
+
+
+delimiter $$
+create procedure obtener_publicaciones_recientes()
+
+begin
+	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video from Publicacion p
+    limit 6;
 end $$
 delimiter ;
 
@@ -416,8 +440,12 @@ begin
 end $$
 delimiter ;
 
-
-
+delimiter $$
+create procedure obtener_dia_evento(mes int)
+begin
+	select distinct day(c.fecha) from Calendario c where month(fecha) = mes; 
+end $$
+delimiter ;
 
 
 
