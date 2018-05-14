@@ -8,9 +8,12 @@
 
     <div class="w3-container" style="padding:128px 16px" id="about">
         <h3 class="w3-center">Sitios de interes</h3>
+
+
+    {% for elementos in sitiosinteres %}
         <div class="w3-row-padding w3-center" style="margin-top:64px">
           
-          {% for sitio in sitiosinteres %}
+          {% for sitio in elementos %}
           <div class="w3-quarter">
             <i class="w3-margin-bottom w3-jumbo">
                 <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> 
@@ -19,10 +22,14 @@
             <p>{{ sitio.2 }}</p>
           </div>
           {% endfor %}
+
           
         </div>
-
+          
+        {% endfor %}
     </div>
+    
+        
 
 
 </div>

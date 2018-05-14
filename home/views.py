@@ -18,21 +18,78 @@ def enviarCorreosElectronicos():
     send_mail('Prueba de envío de correos varios usuarios', 'Im Poppy', 'pdjango123@gmail.com', ['dylanrodbar97@gmail.com', 'josemorar96@gmail.com ', 'karizp14@gmail.com '])
     
 
+def convertir_tupla_lista(tupla):
+    lista = []
+    largo = len(tupla)
+    for i in range(largo):
+        lista.append(list(tupla[i]))
+    return lista
+
+
+def convertir_lista_tupla(lista):
+    largo = len(lista)
+    for i in range(largo):
+        lista[i] = tuple(lista[i])
+    lista = tuple(lista)
+    return lista
+
 def dividirListaGruposTres(lista):
     lista_retorno = []
-    largo = 0
-    return 0
+    elemento_lista = []
+    largo = len(lista)
+    if largo <= 3:
+        lista_retorno.append(lista)
+        lista_retorno.append([])
+    else:
+        elemento_lista = lista[:3]
+        lista_retorno.append(elemento_lista)
+        lista_retorno.append(lista[3:])
+    return lista_retorno
+
+
+def dividirListaGruposCuatro(lista):
+    lista_retorno = []
+    elemento_lista = []
+    largo = len(lista)
+    if largo <= 4:
+        lista_retorno.append(lista)
+        lista_retorno.append([])
+    else:
+        while(largo > 4):
+            elemento_lista = lista[:4]
+            lista_retorno.append(elemento_lista)
+            lista = lista[4:]
+            largo = len(lista)
+        lista_retorno.append(lista)
+    return lista_retorno
 
 def index(request):
+    template = loader.get_template('home/index.html')
 
+    request.session['Mes'] = 0
+    request.session['Anio'] = 0
+    request.session['CuentaPublicaciones'] = 0
+        
+    
     cur = connection.cursor()
     cur.callproc('obtener_publicaciones_recientes', [])
     publicaciones = cur.fetchall() 
-    print(publicaciones)   
+    cur.nextset()
+    cur.close()
 
-    enviarCorreosElectronicos()
+    lista_publicaciones = convertir_tupla_lista(publicaciones)
+    
+    lista_acomodada = dividirListaGruposTres(lista_publicaciones)
+    lista_acomodada_tupla = convertir_lista_tupla(lista_acomodada)
 
-    return render(request, 'home/index.html')
+    print(lista_acomodada_tupla)
+    context = {
+        'noticias': lista_acomodada_tupla
+    }
+
+    return HttpResponse(template.render(context, request))
+
+    #return render(request, 'home/index.html')
 
 
 def errorLogin(request):
@@ -59,8 +116,6 @@ def login(request):
         request.session['Usuario'] = login[0][0]
         request.session['IdTipoUsuario'] = login[0][1]
         request.session['TipoUsuario'] = login[0][2]
-        request.session['Mes'] = 1
-        request.session['Anio'] = 1
         
         return HttpResponseRedirect(reverse('forum:viewEscuela'))
         # if login[0][1] == "Administrador":
@@ -89,8 +144,14 @@ def viewService(request):
     servicios = cur.fetchall()
     cur.close
 
+    lista_publicaciones = convertir_tupla_lista(servicios)
+    
+    lista_acomodada = dividirListaGruposCuatro(lista_publicaciones)
+    lista_acomodada_tupla = convertir_lista_tupla(lista_acomodada)
+    
+
     context = {
-        'servicios': servicios
+        'servicios': lista_acomodada_tupla
     }
     return HttpResponse(template.render(context, request))
 
@@ -103,8 +164,13 @@ def viewInteres(request):
     sitios = cur.fetchall()
     cur.close
 
+    lista_publicaciones = convertir_tupla_lista(sitios)
+    
+    lista_acomodada = dividirListaGruposCuatro(lista_publicaciones)
+    lista_acomodada_tupla = convertir_lista_tupla(lista_acomodada)
+    
     context = {
-        'sitiosinteres': sitios
+        'sitiosinteres': lista_acomodada_tupla
     }
     return HttpResponse(template.render(context, request))
 

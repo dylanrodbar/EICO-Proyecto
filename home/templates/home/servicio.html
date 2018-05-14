@@ -8,9 +8,11 @@
 
   <div class="w3-container" style="padding:128px 16px" id="about">
     <h3 class="w3-center">Sitios de interes</h3>
+
+    {% for elementos in servicios %}
     <div class="w3-row-padding w3-center" style="margin-top:64px">
       
-      {% for servicio in servicios %}
+      {% for servicio in elementos %}
       <div class="w3-quarter">
         <i class="w3-margin-bottom w3-jumbo">
             <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> 
@@ -21,6 +23,7 @@
       {% endfor %}
       
     </div>
+  {% endfor %}
 
   </div>
 

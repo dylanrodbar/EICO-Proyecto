@@ -33,8 +33,10 @@ def convertir_lista_tupla(lista):
 def viewEscuela(request):
     template = loader.get_template('forum/escuela.html')
 
+    numero_fila = request.session['CuentaPublicaciones']
+    
     cur = connection.cursor()
-    cur.callproc('obtener_publicaciones_escuela', [])
+    cur.callproc('obtener_publicaciones_escuela', [numero_fila])
     noticias = cur.fetchall()
 
     cur.nextset()
