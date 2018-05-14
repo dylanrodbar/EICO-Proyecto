@@ -48,7 +48,7 @@ def viewEscuela(request):
     cur.callproc('obtener_todas_publicaciones_escuela', [])
     publicaciones_todas = cur.fetchall()
     cur.nextset()
-    cur.callproc('obtener_top_publicaciones_relevantes', [])
+    cur.callproc('obtener_top_publicaciones_relevantes_escuela', [])
     
     noticias_relevantes = cur.fetchall()
 
@@ -103,7 +103,7 @@ def viewEgresado(request):
     cur.callproc('obtener_todas_publicaciones_egresados', [])
     publicaciones_todas = cur.fetchall()
     cur.nextset()
-    cur.callproc('obtener_top_publicaciones_relevantes', [])
+    cur.callproc('obtener_top_publicaciones_relevantes_egresados', [])
     
     noticias_relevantes = cur.fetchall()
 
@@ -372,7 +372,7 @@ def anteriorEscuela(request):
     noticias = cur.fetchall()
 
     cur.nextset()
-    cur.callproc('obtener_top_publicaciones_relevantes', [])
+    cur.callproc('obtener_top_publicaciones_relevantes_escuela', [])
     
     noticias_relevantes = cur.fetchall()
 
@@ -430,7 +430,7 @@ def siguienteEscuela(request):
     noticias = cur.fetchall()
 
     cur.nextset()
-    cur.callproc('obtener_top_publicaciones_relevantes', [])
+    cur.callproc('obtener_top_publicaciones_relevantes_escuela', [])
     
     noticias_relevantes = cur.fetchall()
 
@@ -489,7 +489,7 @@ def anteriorEgresados(request):
     noticias = cur.fetchall()
 
     cur.nextset()
-    cur.callproc('obtener_top_publicaciones_relevantes', [])
+    cur.callproc('obtener_top_publicaciones_relevantes_egresados', [])
     
     noticias_relevantes = cur.fetchall()
 
@@ -546,7 +546,7 @@ def siguienteEgresados(request):
     noticias = cur.fetchall()
 
     cur.nextset()
-    cur.callproc('obtener_top_publicaciones_relevantes', [])
+    cur.callproc('obtener_top_publicaciones_relevantes_egresados', [])
     
     noticias_relevantes = cur.fetchall()
 

@@ -161,6 +161,7 @@ create table if not exists CalificacionXPublicacion(
 	publicacion_fk int,
     calificacion_fk int,
     usuario_fk int,
+    fecha date,
     
     foreign key(publicacion_fk) references Publicacion(id) on delete cascade,
     foreign key(calificacion_fk) references Tipo_Calificacion(id) on delete cascade,
