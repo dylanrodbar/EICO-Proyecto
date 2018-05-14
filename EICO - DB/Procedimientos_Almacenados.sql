@@ -189,14 +189,16 @@ end $$
 delimiter ;
 
 delimiter $$
-create procedure obtener_publicaciones_egresados()
+create procedure obtener_publicaciones_egresados(numero_fila int)
 
 begin
 	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
-    where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre = 'Egresado';
+    where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre = 'Egresado'
+    limit numero_fila, 4;
 end $$
 delimiter ;
 
+drop procedure obtener_publicaciones_egresados
 
 delimiter $$
 create procedure obtener_publicaciones_escuela(numero_fila int)
@@ -218,6 +220,15 @@ begin
 end $$
 delimiter ;
 
+
+delimiter $$
+create procedure obtener_todas_publicaciones_egresados()
+
+begin
+	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
+    where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre = 'Egresado';
+end $$
+delimiter ;
 
 
 
@@ -342,10 +353,9 @@ delimiter $$
 create procedure calificar_publicacion(id int, calificacion int, usuario int)
 
 begin
-		insert into CalificacionXPublicacion(publicacion_fk, calificacion_fk, usuario_fk) values (id, calificacion, usuario);
+		insert into CalificacionXPublicacion(publicacion_fk, calificacion_fk, usuario_fk, fecha) values (id, calificacion, usuario, curdate());
 end $$
 delimiter ;
-
 
 
 
@@ -377,6 +387,50 @@ begin
         where cp.publicacion_fk = id and tp.id = cp.calificacion_fk and tp.nombre = 'Emocionante';
 end $$
 delimiter ;
+
+
+
+
+
+delimiter $$
+create procedure obtener_relevantes()
+
+begin
+		select count(*) as 'Relevantes', cp.fecha from Tipo_Calificacion tp, CalificacionXPublicacion cp
+        where tp.id = cp.calificacion_fk and tp.nombre = 'Relevante'
+        group by cp.fecha
+        limit 7;
+end $$
+delimiter ;
+
+
+
+
+delimiter $$
+create procedure obtener_indiferentes()
+
+begin
+		select count(*) as 'Indiferentes', cp.fecha from Tipo_Calificacion tp, CalificacionXPublicacion cp
+        where tp.id = cp.calificacion_fk and tp.nombre = 'Indiferente'
+        group by cp.fecha
+        limit 7;
+end $$
+delimiter ;
+
+
+
+delimiter $$
+create procedure obtener_emocionantes()
+
+begin
+		select count(*) as 'Emocionantes', cp.fecha from Tipo_Calificacion tp, CalificacionXPublicacion cp
+        where tp.id = cp.calificacion_fk and tp.nombre = 'Emocionante'
+        group by cp.fecha
+        limit 7;
+end $$
+delimiter ;
+
+call obtener_relevantes;
 
 
 delimiter $$
@@ -446,6 +500,5 @@ begin
 	select distinct day(c.fecha) from Calendario c where month(fecha) = mes; 
 end $$
 delimiter ;
-
 
 
