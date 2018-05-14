@@ -14,6 +14,107 @@ import os
 import numpy as np
 import Excel
 import math
+import matplotlib.pyplot as plt
+import datetime
+
+import cloudinary.uploader
+
+cloudinary.config(
+    cloud_name = 'poppycloud',
+    api_key = '328358331617938',
+    api_secret = 'z-7k70XpvP1dl1ZdiqVF0olXp7A'
+)
+
+
+def generarGrafico(nombre, datosGrafico):
+    
+
+    print(datosGrafico)
+    fig = plt.figure(u"Reacciones") # Figure
+    ax = fig.add_subplot(111) # Axes
+    nombres = ['Relevante', 'Indiferente', 'Emocionante']
+    datos = [datosGrafico[0], datosGrafico[1], datosGrafico[2]]
+
+        
+
+    xx = range(len(datos))
+
+    ax.bar(xx, datos, width=0.8, align='center')
+    ax.set_xticks(xx)
+    ax.set_xticklabels(nombres)
+
+    plt.title("Reacciones para: "+nombre)
+
+    plt.savefig("Grafico"+nombre+".png")
+    imagen_subida = cloudinary.uploader.upload("Grafico"+nombre+".png")
+
+    #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
+    imagen_subida_url = imagen_subida["secure_url"]
+
+    return imagen_subida_url
+    
+def generarGraficos(lista_graficos, lista_graficos_fechas):
+
+    contador = 0
+    lista_direcciones = []
+    print(lista_graficos)
+    for i in lista_graficos_fechas:
+        
+
+        fecha = str(i.day)+"-"+str(i.month)+"-"+str(i.year)
+        lista_direcciones.append(generarGrafico(fecha, lista_graficos[contador]))
+        
+        #plt.show()
+        
+        contador += 1
+
+        #imagen_subida = cloudinary.uploader.upload(img)
+
+        #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
+        #imagen_subida_url = imagen_subida["secure_url"]
+    return lista_direcciones
+    
+
+def obtenerValoresGraficos(lista_graficos, relevantes, indiferentes, emocionantes):
+    largo_relevantes = len(relevantes)
+    largo_indiferentes = len(indiferentes)
+    largo_emocionantes = len(emocionantes)
+
+    for i in range(largo_relevantes):
+        lista_graficos[i][0] = relevantes[i][0]
+    for i in range(largo_indiferentes):
+        lista_graficos[i][1] = indiferentes[i][0]
+    for i in range(largo_emocionantes):
+        lista_graficos[i][2] = emocionantes[i][0]
+    return lista_graficos
+
+
+def obtenerFechas():
+    lista = []
+    lista.append(datetime.datetime.now())
+    contador = 6
+    while contador > 0:
+        lista.append(datetime.datetime.now() - datetime.timedelta(days=contador))
+        contador -= 1
+    return lista
+
+
+def obtenerValoresGraficosFechas(lista_graficos, relevantes, indiferentes, emocionantes):
+    largo_relevantes = len(relevantes)
+    largo_indiferentes = len(indiferentes)
+    largo_emocionantes = len(emocionantes)
+
+    for i in range(largo_relevantes):
+        lista_graficos[i][0] = relevantes[i][1]
+    for i in range(largo_indiferentes):
+        lista_graficos[i][1] = indiferentes[i][1]
+    for i in range(largo_emocionantes):
+        lista_graficos[i][2] = emocionantes[i][1]
+    return lista_graficos
+    
+
+def inicializarGraficosReacciones():
+    return [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
 
 def enviarCorreosElectronicos():
     send_mail('Prueba de envío de correos varios usuarios', 'Im Poppy', 'pdjango123@gmail.com', ['dylanrodbar97@gmail.com', 'josemorar96@gmail.com ', 'karizp14@gmail.com '])
@@ -193,13 +294,32 @@ def admin(request):
     cur.nextset()
     cur.callproc('obtener_calendario', [])
     calendarios = cur.fetchall()
+    cur.nextset()
+    cur.callproc('obtener_relevantes', [])
+    relevantes = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_indiferentes', [])
+    indiferentes = cur.fetchall()
+    
+    cur.nextset()
+    cur.callproc('obtener_emocionantes', [])
+    emocionantes = cur.fetchall()
+    
     cur.close
 
+    inicio_valores = inicializarGraficosReacciones()
+    valores_graficos = obtenerValoresGraficos(inicio_valores, relevantes, indiferentes, emocionantes)
+    valores_graficos_fechas = obtenerFechas()
+
+    direcciones = generarGraficos(valores_graficos, valores_graficos_fechas)
+    
     context = {
         'sitiosinteres': sitios,
         'servicios': servicios,
         'calendarios': calendarios,
-        'id': 0
+        'id': 0,
+        'direcciones': direcciones
     }
     return HttpResponse(template.render(context, request))
 

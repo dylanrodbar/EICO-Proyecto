@@ -31,5 +31,7 @@ urlpatterns = [
 
                 url(r'^escuela/anteriorescuela/$', views.anteriorEscuela, name="anteriorEscuela"),
                 url(r'^escuela/siguienteescuela/$', views.siguienteEscuela, name="siguienteEscuela"),
+                url(r'^egresados/anterioregresados/$', views.anteriorEgresados, name="anteriorEgresados"),
+                url(r'^egresados/siguienteegresados/$', views.siguienteEgresados, name="siguienteEgresados"),
                               
             ]

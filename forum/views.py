@@ -89,15 +89,53 @@ def viewEscuela(request):
 def viewEgresado(request):
     template = loader.get_template('forum/egresado.html')
 
+    request.session['CuentaPublicaciones'] = 0
+    numero_fila = request.session['CuentaPublicaciones']
+    
+    numero_fila = numero_fila * 4
+
     cur = connection.cursor()
-    cur.callproc('obtener_publicaciones_egresados', [])
+    cur.callproc('obtener_publicaciones_egresados', [numero_fila])
     noticias = cur.fetchall()
+
+    cur.nextset()
+
+    cur.callproc('obtener_todas_publicaciones_egresados', [])
+    publicaciones_todas = cur.fetchall()
+    cur.nextset()
+    cur.callproc('obtener_top_publicaciones_relevantes', [])
+    
+    noticias_relevantes = cur.fetchall()
+
+    
+    lista = convertir_tupla_lista(noticias)
+
+    largo_noticias = len(lista)
+
+    
+    for i in range(largo_noticias):
+        indice = lista[i]
+        id_c = indice[0]
+        cur.nextset()
+        cur.callproc('obtener_relevante_publicacion', [id_c])
+        cantidad_relevantes = cur.fetchall()
+        elemento = cantidad_relevantes[0][0]
+        lista[i].append(elemento)
+
+    noticias = convertir_lista_tupla(lista)
+
+    cur.nextset()
     cur.close
+
+    largo_noticias_todas = len(publicaciones_todas)
+    numero_grupos = math.ceil((largo_noticias_todas / 4))
+    request.session['LimitePublicaciones'] = numero_grupos
     
     
     
     context = {
-	    'egresados': noticias 
+   	    'egresados': noticias,
+        'noticiasrelevantes': noticias_relevantes
     }
     return HttpResponse(template.render(context, request))
     #return render(request, 'forum/egresado.html')
@@ -425,6 +463,122 @@ def siguienteEscuela(request):
     
     context = {
    	    'noticias': noticias,
+        'noticiasrelevantes': noticias_relevantes
+    }
+    return HttpResponse(template.render(context, request))
+
+    #return render(request, 'forum/escuela.html')
+
+
+
+
+def anteriorEgresados(request):
+    template = loader.get_template('forum/egresado.html')
+
+    numero_fila = request.session['CuentaPublicaciones']
+    numero_grupos = request.session['LimitePublicaciones']
+    
+    numero_fila -= 1
+    if numero_fila < 0:
+        numero_fila = 0
+
+    numero_fila = numero_fila * 4
+
+    cur = connection.cursor()
+    cur.callproc('obtener_publicaciones_egresados', [numero_fila])
+    noticias = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_top_publicaciones_relevantes', [])
+    
+    noticias_relevantes = cur.fetchall()
+
+    
+    lista = convertir_tupla_lista(noticias)
+
+    largo_noticias = len(lista)
+
+    
+    for i in range(largo_noticias):
+        indice = lista[i]
+        id_c = indice[0]
+        cur.nextset()
+        cur.callproc('obtener_relevante_publicacion', [id_c])
+        cantidad_relevantes = cur.fetchall()
+        elemento = cantidad_relevantes[0][0]
+        lista[i].append(elemento)
+
+    noticias = convertir_lista_tupla(lista)
+
+    cur.nextset()
+    cur.close
+
+        
+    #numero_grupos = math.ceil((largo_noticias / 4))
+    #request.session['LimiteNoticias'] = numero_grupos
+    #print(request.session['LimiteNoticias'])
+
+    
+    
+    context = {
+   	    'egresados': noticias,
+        'noticiasrelevantes': noticias_relevantes
+    }
+    return HttpResponse(template.render(context, request))
+
+    #return render(request, 'forum/escuela.html')
+
+
+def siguienteEgresados(request):
+    template = loader.get_template('forum/egresado.html')
+
+    numero_fila = request.session['CuentaPublicaciones']
+    numero_grupos = request.session['LimitePublicaciones']
+    print(numero_grupos)
+    numero_fila += 1
+    if numero_fila > numero_grupos:
+        numero_fila = numero_grupos
+    numero_fila = numero_fila * 4
+
+    
+    cur = connection.cursor()
+    cur.callproc('obtener_publicaciones_egresados', [numero_fila])
+    noticias = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_top_publicaciones_relevantes', [])
+    
+    noticias_relevantes = cur.fetchall()
+
+    
+    lista = convertir_tupla_lista(noticias)
+
+    largo_noticias = len(lista)
+
+    
+    for i in range(largo_noticias):
+        indice = lista[i]
+        id_c = indice[0]
+        cur.nextset()
+        cur.callproc('obtener_relevante_publicacion', [id_c])
+        cantidad_relevantes = cur.fetchall()
+        elemento = cantidad_relevantes[0][0]
+        lista[i].append(elemento)
+
+    noticias = convertir_lista_tupla(lista)
+
+    cur.nextset()
+    cur.close
+
+        
+    #numero_grupos = math.ceil((largo_noticias / 4))
+    #request.session['LimiteNoticias'] = numero_grupos
+    #print(request.session['LimiteNoticias'])
+
+    
+    
+    context = {
+   	    'egresados': noticias,
         'noticiasrelevantes': noticias_relevantes
     }
     return HttpResponse(template.render(context, request))

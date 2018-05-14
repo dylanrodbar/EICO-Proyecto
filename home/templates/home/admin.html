@@ -41,10 +41,11 @@
 
                     <br>
                     <br>
+                    {% for i in direcciones %}
                     <div align="center">
-                        <img src="{% static 'home/img/stat.png' %}" class="w3-hover-opacity">
+                        <img src={{i}}>
                     </div>
-
+                    {% endfor %}
                     <br>
                     <br>
                 
