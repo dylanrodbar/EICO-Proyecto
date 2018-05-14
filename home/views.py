@@ -13,6 +13,7 @@ import cv2
 import os
 import numpy as np
 import Excel
+import math
 
 def enviarCorreosElectronicos():
     send_mail('Prueba de envío de correos varios usuarios', 'Im Poppy', 'pdjango123@gmail.com', ['dylanrodbar97@gmail.com', 'josemorar96@gmail.com ', 'karizp14@gmail.com '])
@@ -69,6 +70,7 @@ def index(request):
     request.session['Mes'] = 0
     request.session['Anio'] = 0
     request.session['CuentaPublicaciones'] = 0
+    request.session['LimitePublicaciones'] = 0
         
     
     cur = connection.cursor()

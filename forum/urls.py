@@ -28,5 +28,8 @@ urlpatterns = [
                 url(r'^ver/(?P<id>[0-9]+)/$', views.viewNoticia, name="viewNoticia"),
 
                 url(r'^insertarComentario/(?P<id>[0-9]+)/$', views.insertarComentario, name="insertarComentario"),
+
+                url(r'^escuela/anteriorescuela/$', views.anteriorEscuela, name="anteriorEscuela"),
+                url(r'^escuela/siguienteescuela/$', views.siguienteEscuela, name="siguienteEscuela"),
                               
             ]
