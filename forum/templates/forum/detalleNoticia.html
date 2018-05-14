@@ -56,6 +56,7 @@
               <br>
               <br>
 
+              {% if request.session.Usuario %}
               <h4>Deja un comentario</h4>
                 <form role="form" method='POST' enctype="multipart/form-data" action='{% url 'forum:insertarComentario' id %}'  target="_blank">  {% csrf_token %}>
                     <div class="form-group">
@@ -66,6 +67,7 @@
                             <button type="submit" class="btn" style="background-color:#2471A3; color:white;">Enviar</button>
                     </div>
                 </form>
+                {% endif %}
                 
                 <p>Comentarios:</p><br>
 

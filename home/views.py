@@ -7,14 +7,31 @@ from django.template import loader
 from django.db import connection
 #from django.urls import reverse
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 
 import cv2
 import os
 import numpy as np
 import Excel
 
+def enviarCorreosElectronicos():
+    send_mail('Prueba de envío de correos varios usuarios', 'Im Poppy', 'pdjango123@gmail.com', ['dylanrodbar97@gmail.com', 'josemorar96@gmail.com ', 'karizp14@gmail.com '])
+    
+
+def dividirListaGruposTres(lista):
+    lista_retorno = []
+    largo = 0
+    return 0
 
 def index(request):
+
+    cur = connection.cursor()
+    cur.callproc('obtener_publicaciones_recientes', [])
+    publicaciones = cur.fetchall() 
+    print(publicaciones)   
+
+    enviarCorreosElectronicos()
+
     return render(request, 'home/index.html')
 
 
