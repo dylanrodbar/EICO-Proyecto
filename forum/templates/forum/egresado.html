@@ -68,15 +68,33 @@
 <div class="w3-col l4">
      <!-- Buscador -->
         <div class="w3-card w3-margin w3-margin-top">
-                <form class="form-inline">
+            <form class="form-inline" style="margin-top: 10px; margin-bottom: 20px;" method='POST' enctype="multipart/form-data" action='{% url 'forum:buscarNoticiaEgresado'  %}'  >  {% csrf_token %}>
+              <div class="input-group">
+                <input type="text" class="form-control" name="nombrenoticia" size="50" placeholder="Buscar noticia..." required>
+                <div class="input-group-btn" >
+                          
+                      <button  class="btn btn-default btn-sm" data-target="#Buscar_Usuario"><span class="glyphicon glyphicon-search" ></span></button>
+                    
+                </div>
+              </div>
+        </form>
+     
+        
+                      <form class="form-inline" style="margin-top: 10px; margin-bottom: 20px;" method='POST' enctype="multipart/form-data" action='{% url 'forum:buscarUsuarioEgresado'  %}'  >  {% csrf_token %}>
                         <div class="input-group">
-                          <input type="text" class="form-control" size="50" placeholder="Buscar..." required>
-                          <div class="input-group-btn">
-                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                          <input type="text" class="form-control" name="nombreusuario" size="50" placeholder="Buscar usuario..." required>
+                          <div class="input-group-btn" >
+                                    
+                                <button  class="btn btn-default btn-sm" data-target="#Buscar_Usuario"><span class="glyphicon glyphicon-search" ></span></button>
+                              
                           </div>
                         </div>
-                      </form>               
-        </div><hr>
+                  </form>
+
+
+
+              
+      </div><hr>
         
         <!-- Noticas populares -->
         <div class="w3-card w3-margin">
@@ -97,5 +115,25 @@
 
 </div>
 </div>
+
+<div class="modal fade" id="Buscar_Usuario" role="dialog" style="padding-top:150px;">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">     
+               
+            <div class="modal-body" style="padding:40px 50px;"> 
+                <h1>Resultados de la busqueda</h1>   
+              <ul class="w3-ul w3-hoverable w3-white">               
+                {% for i in "x"|rjust:"5" %}
+                <li class="w3-padding-16">
+                  <img src="{% static 'home/img/img5.jpg' %}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+                  <span class="w3-large">Username</span><br>
+                </li>
+              {% endfor %}
+              </ul>
+            </div>
+        </div>    
+    </div>
+  </div>
 
 {% endblock %}

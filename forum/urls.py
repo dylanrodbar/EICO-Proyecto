@@ -33,5 +33,13 @@ urlpatterns = [
                 url(r'^escuela/siguienteescuela/$', views.siguienteEscuela, name="siguienteEscuela"),
                 url(r'^egresados/anterioregresados/$', views.anteriorEgresados, name="anteriorEgresados"),
                 url(r'^egresados/siguienteegresados/$', views.siguienteEgresados, name="siguienteEgresados"),
+
+                url(r'^buscarUsuarioEscuela/$', views.buscarUsuarioEscuela, name="buscarUsuarioEscuela"),
+                url(r'^buscarUsuarioEgresado/$', views.buscarUsuarioEgresado, name="buscarUsuarioEgresado"),
+                url(r'^buscarNoticiaEscuela/$', views.buscarNoticiaEscuela, name="buscarNoticiaEscuela"),
+                url(r'^buscarNoticiaEgresado/$', views.buscarNoticiaEgresado, name="buscarNoticiaEgresado"),
+                
+                
+                
                               
             ]

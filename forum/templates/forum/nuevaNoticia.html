@@ -19,7 +19,7 @@
                 <div align="right" style="padding-top:10px; padding-right:10px">      
                     <button type="button" class="btn btn-default">Subir Imagen <span class="glyphicon glyphicon-upload" aria-hidden="true"></span></button>                           
                 </div> -->
-                        <form class="w3-container w3-card w3-padding-32 w3-white" method='POST' enctype="multipart/form-data" action='{% url 'forum:insertarPost'  %}'  target="_blank">  {% csrf_token %}
+                        <form class="w3-container w3-card w3-padding-32 w3-white" method='POST' enctype="multipart/form-data" action='{% url 'forum:insertarPost'  %}'  >  {% csrf_token %}
 
                             <div class="fileinput fileinput-new" data-provides="fileinput" style="width:100%; ">
                                 <div class="fileinput-new thumbnail"style="width:100% ; max-height:500px">

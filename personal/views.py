@@ -52,6 +52,45 @@ def viewProfile(request):
 
     return HttpResponse(template.render(context, request))
 
+
+
+# Create your views here.
+def viewProfileUser(request, id):
+
+    template = loader.get_template('personal/perfil.html')
+
+    id_usuario = request.session['Usuario']
+
+    cur = connection.cursor()
+    cur.callproc('obtener_usuario_id', [id,])
+    datos_usuario = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_publicaciones_usuario', [id, ])
+    publicaciones_usuario = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_experiencias_o_proyectos_usuario', [id])
+    experiencia = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_educacion_usuario', [id])
+    educacion = cur.fetchall()
+    
+    
+    cur.close
+
+    datos_usuario_detalle = datos_usuario[0]
+
+    context = {
+        'datos_usuario': datos_usuario_detalle,
+        'publicaciones_usuario': publicaciones_usuario,
+        'educacion': educacion,
+        'experiencia': experiencia
+    }
+
+    return HttpResponse(template.render(context, request))
+
 def editarPerfil(request):
 
     template = loader.get_template('personal/perfil.html')

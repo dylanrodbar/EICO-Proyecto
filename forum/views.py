@@ -584,3 +584,97 @@ def siguienteEgresados(request):
     return HttpResponse(template.render(context, request))
 
     #return render(request, 'forum/escuela.html')
+
+
+def buscarUsuarioEscuela(request):
+    template = loader.get_template('forum/usuariosbuscados.html')
+
+    nombreusuario = request.POST.get('nombreusuario')
+    
+    formatoinicio = '%'
+    formatofinal = '%'
+
+    parametro = formatoinicio + nombreusuario + formatofinal
+    print(parametro)
+
+    cur = connection.cursor()
+    cur.callproc('obtener_usuarios_substring_no_egresados', [parametro])
+    usuarios = cur.fetchall()
+
+    
+
+    context = {
+   	    'usuarios': usuarios,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def buscarUsuarioEgresado(request):
+    template = loader.get_template('forum/usuariosbuscados.html')
+
+    nombreusuario = request.POST.get('nombreusuario')
+    
+    formatoinicio = '%'
+    formatofinal = '%'
+
+    parametro = formatoinicio + nombreusuario + formatofinal
+    print(parametro)
+
+    cur = connection.cursor()
+    cur.callproc('obtener_usuarios_substring_egresados', [parametro])
+    usuarios = cur.fetchall()
+
+    
+
+    context = {
+   	    'usuarios': usuarios,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def buscarNoticiaEscuela(request):
+    template = loader.get_template('forum/noticiasbuscadas.html')
+
+    nombrenoticia = request.POST.get('nombrenoticia')
+
+
+
+    formatoinicio = '%'
+    formatofinal = '%'
+
+    parametro = formatoinicio + nombrenoticia + formatofinal
+    print(parametro)
+
+    cur = connection.cursor()
+    cur.callproc('obtener_publicaciones_substring_no_egresados', [parametro])
+    noticias = cur.fetchall()
+
+    
+
+    context = {
+   	    'noticias': noticias,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def buscarNoticiaEgresado(request):
+    template = loader.get_template('forum/noticiasbuscadas.html')
+
+    nombrenoticia = request.POST.get('nombrenoticia')
+    
+    formatoinicio = '%'
+    formatofinal = '%'
+
+    parametro = formatoinicio + nombrenoticia + formatofinal
+    print(parametro)
+
+    cur = connection.cursor()
+    cur.callproc('obtener_publicaciones_substring_egresados', [parametro])
+    noticias = cur.fetchall()
+
+    
+
+    context = {
+   	    'noticias': noticias,
+    }
+    return HttpResponse(template.render(context, request))
