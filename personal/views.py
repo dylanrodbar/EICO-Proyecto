@@ -114,3 +114,78 @@ def agregarEducacion(request):
     cur.close
     
     return HttpResponseRedirect(reverse('perfil:viewProfile'))
+
+
+
+def editarEducacion(request, id):
+    template = loader.get_template('personal/editareducacion.html')
+    context = {
+        'id': id
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def editarEducacionAux(request, id):
+    template = loader.get_template('personal/editareducacion.html')
+    
+    id_usuario = request.session['Usuario']
+    titulo = request.POST.get('tituloeducacion')
+    centro_educativo = request.POST.get('centroeducativoeducacion')
+    fecha_inicio = request.POST.get('finicioeducacion')
+    fecha_final = request.POST.get('ffinaleducacion')
+    descripcion = request.POST.get('descripcioneducacion')
+
+    print("AUXUXUXU")
+
+
+    cur = connection.cursor()
+    cur.callproc('editar_educacion', [id, titulo, centro_educativo, fecha_inicio, fecha_final, descripcion, id_usuario])
+    cur.close
+    return HttpResponseRedirect(reverse('perfil:viewProfile'))
+
+
+
+def editarExperiencia(request, id):
+    template = loader.get_template('personal/editarexperiencia.html')
+    context = {
+        'id': id
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def editarExperienciaAux(request, id):
+    template = loader.get_template('personal/editarexperiencia.html')
+    
+    id_usuario = request.session['Usuario']
+
+    puesto = request.POST.get('puestoexperiencia')
+    trabajo = request.POST.get('trabajoexperiencia')
+    fecha_inicio = request.POST.get('finicioexperiencia')
+    fecha_final = request.POST.get('ffinalexperiencia')
+    descripcion = request.POST.get('descripcionexperiencia')
+
+
+    cur = connection.cursor()
+    cur.callproc('editar_experiencia_o_proyecto', [id, puesto, trabajo, fecha_inicio, fecha_final, descripcion, id_usuario])
+    cur.close
+    return HttpResponseRedirect(reverse('perfil:viewProfile'))
+
+
+def eliminarEducacion(request, id):
+    template = loader.get_template('personal/perfil.html')
+    context = {}
+    cur = connection.cursor()
+    cur.callproc('eliminar_educacion', [id])
+    cur.close
+
+    return HttpResponseRedirect(reverse('perfil:viewProfile'))
+
+
+def eliminarExperiencia(request, id):
+    template = loader.get_template('personal/perfil.html')
+    context = {}
+    cur = connection.cursor()
+    cur.callproc('eliminar_experiencia', [id])
+    cur.close
+
+    return HttpResponseRedirect(reverse('perfil:viewProfile'))
