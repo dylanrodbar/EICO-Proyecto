@@ -434,17 +434,32 @@ call obtener_relevantes;
 
 
 delimiter $$
-create procedure obtener_top_publicaciones_relevantes()
+create procedure obtener_top_publicaciones_relevantes_escuela()
 
 begin
-		select count(*) as 'Relevantes', substring(p.titulo, 1, 45),  p.media, substring(p.descripcion, 1, 45) from Tipo_Calificacion tp, CalificacionXPublicacion cp, Publicacion p
-        where cp.publicacion_fk = p.id and tp.id = cp.calificacion_fk and tp.nombre = 'Relevante'
+		select count(*) as 'Relevantes', substring(p.titulo, 1, 45),  p.media, substring(p.descripcion, 1, 45) from Tipo_Calificacion tp, CalificacionXPublicacion cp, Publicacion p, Usuario u, Tipo_Usuario tu
+        where cp.publicacion_fk = p.id and tp.id = cp.calificacion_fk and tp.nombre = 'Relevante' and cp.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado'
         group by p.id
-        order by Relevantes
+        order by Relevantes desc
+        limit 6;
+         
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure obtener_top_publicaciones_relevantes_egresados()
+
+begin
+		select count(*) as 'Relevantes', substring(p.titulo, 1, 45),  p.media, substring(p.descripcion, 1, 45) from Tipo_Calificacion tp, CalificacionXPublicacion cp, Publicacion p, Usuario u, Tipo_Usuario tu
+        where cp.publicacion_fk = p.id and tp.id = cp.calificacion_fk and tp.nombre = 'Relevante' and cp.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre = 'Egresado'
+        group by p.id
+        order by Relevantes desc 
         limit 5;
          
 end $$
 delimiter ;
+
 
 delimiter $$
 create procedure insertar_experiencia_o_proyecto(nombre varchar(200), lugar_trabajo varchar(200), fecha_inicio date, fecha_final date, descripcion text, usuario_fk int)
@@ -461,6 +476,7 @@ end $$
 delimiter ;
 
 
+
 delimiter $$
 create procedure insertar_educacion(nombre_titulo varchar(200), centro_educativo varchar(200), fecha_inicio date, fecha_final date, descripcion text, usuario_fk int)
 begin
@@ -468,6 +484,22 @@ begin
 end $$
 delimiter ;
 
+
+
+delimiter $$
+create procedure editar_educacion(id int, nombre_titulo varchar(200), centro_educativo varchar(200), fecha_inicio date, fecha_final date, descripcion text, usuario_fk int)
+begin
+	update Educacion set Educacion.nombre_titulo = nombre_titulo, Educacion.centro_educativo = centro_educativo, Educacion.fecha_inicio = fecha_inicio, Educacion.fecha_final = fecha_final, Educacion.descripcion = descripcion, Educacion.usuario_fk = usuario_fk where Educacion.id = id; 
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure editar_experiencia_o_proyecto(id int, nombre varchar(200), lugar_trabajo varchar(200), fecha_inicio date, fecha_final date, descripcion text, usuario_fk int)
+begin
+	update Experiencia_O_Proyecto set Experiencia_O_Proyecto.nombre = nombre, Experiencia_O_Proyecto.lugar_trabajo = lugar_trabajo, Experiencia_O_Proyecto.fecha_inicio = fecha_inicio, Experiencia_O_Proyecto.fecha_final = fecha_final, Experiencia_O_Proyecto.descripcion = descripcion, Experiencia_O_Proyecto.usuario_fk = usuario_fk where Experiencia_O_Proyecto.id = id; 
+end $$
+delimiter ;
 
 
 delimiter $$
@@ -501,4 +533,19 @@ begin
 end $$
 delimiter ;
 
+
+delimiter $$
+create procedure eliminar_educacion(id int)
+begin
+	delete from Educacion where Educacion.id = id; 
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure eliminar_experiencia(id int)
+begin
+	delete from Experiencia_O_Proyecto where Experiencia_O_Proyecto.id = id;
+end $$
+delimiter ;
 
