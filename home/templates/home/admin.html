@@ -83,7 +83,7 @@
                     <div class="col-md-4" align= "right">
                         <a href="admin/editarservicio/{{servicio.0}}" data-toggle="modal" data-target="#editarSitio"><button type="submit" class="btn btn-default btn-sm" >
                                 <span class="glyphicon glyphicon-pencil"></span></button></a>
-                        <a type="submit" href="admin/eliminarservicio/{{servicio.0}}" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></a>
+                                <a type="submit" data-toggle="modal" data-target="#ConfirmarEliminarServicio" href="admin/eliminarservicio/{{servicio.0}}" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></a>
                     </div>
                 {% endfor %}
                 
@@ -118,7 +118,8 @@
                     <div class="col-md-4" align= "right">
                         <a href="admin/editar/{{sitio.0}}" data-toggle="modal" data-target="#editarSitio"><button type="submit" class="btn btn-default btn-sm" >
                                 <span class="glyphicon glyphicon-pencil"></span></button></a>
-                        <a type="submit" href="admin/eliminar/{{sitio.0}}" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></a>
+                        
+                        <a type="submit" data-toggle="modal" data-target="#ConfirmarEliminarSitio" href="admin/eliminar/{{sitio.0}}" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></a>
                     </div>
                     {% endfor %}
                     
@@ -170,7 +171,7 @@
                     <div class="col-md-4" align= "right">
                             <a href="admin/editarEvento/{{calendario.0}}" data-toggle="modal" data-target="#EditarEvento"><button type="submit" class="btn btn-default btn-sm" >
                                     <span class="glyphicon glyphicon-pencil"></span></button></a>
-                            <a type="submit" href="admin/eliminarEvento/{{calendario.0}}" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></a>
+                                    <a type="submit" data-toggle="modal" data-target="#ConfirmarEliminarCalendario" href="admin/eliminarevento/{{calendario.0}}" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></a>
 
                     </div>
                 {% endfor %}
@@ -348,6 +349,72 @@
         </div>
     </div>  
 
+
+    <div class="modal fade" id="ConfirmarEliminarServicio" role="dialog" style="padding-top:150px;">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h1 align="center">Servicio</h1><br>
+                <h4>Esta seguro que quiere eliminar el servicio</h4>
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Eliminar</button>    
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+            
+        </div>
+        </div>
+  </div>
+
+      <!-- The Modal -->
+      <div class="modal fade" id="ConfirmarEliminarCalendario" role="dialog" style="padding-top:150px;">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <h1 align="center">Calendario</h1><br>
+                    <h4>Esta seguro que quiere eliminar el evento del calendario</h4>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Eliminar</button>    
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                </div>
+                
+            </div>
+            </div>
+      </div>
+
+        <!-- The Modal -->
+        <div class="modal fade" id="ConfirmarEliminarSitio" role="dialog" style="padding-top:150px;">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                
+                    
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <h1 align="center">Sitio de Interes</h1>
+                        <br>
+                        <h4>Esta seguro que quiere eliminar el sitio de interes</h4>
+                    </div>
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Eliminar</button>    
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    </div>
+                    
+                </div>
+                </div>
+          </div>
 
 
 {% endblock %}

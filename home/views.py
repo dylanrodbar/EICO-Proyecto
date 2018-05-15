@@ -478,11 +478,20 @@ def editarSitioAux(request, id):
 
 
 def eliminarSitio(request, id):
-    template = loader.get_template('home/admin.html')
-    context = {}
+    template = loader.get_template('home/eliminarsitio.html')
+    context = {
+        'id': id
+    }
+    
+    return HttpResponse(template.render(context, request))
+
+def eliminarSitioAux(request, id):
+    template = loader.get_template('home/eliminarsitio.html')
+
     cur = connection.cursor()
     cur.callproc('eliminar_sitio_interes', [id])
     cur.close
+
 
     return HttpResponseRedirect(reverse('home:admin'))
 
@@ -506,14 +515,23 @@ def editarServicioAux(request, id):
 
 
 def eliminarServicio(request, id):
-    template = loader.get_template('home/admin.html')
-    context = {}
+    template = loader.get_template('home/eliminarservicio.html')
+    
+    context = {
+        'id': id
+    }
+
+    return HttpResponse(template.render(context, request))
+
+
+def eliminarServicioAux(request, id):
+    template = loader.get_template('home/eliminarservicio.html')
+    
     cur = connection.cursor()
     cur.callproc('eliminar_servicio', [id])
     cur.close
 
     return HttpResponseRedirect(reverse('home:admin'))
-
 
 
 def agregarEvento(request):
@@ -551,7 +569,18 @@ def editarEventoAux(request, id):
 
 
 def eliminarEvento(request, id):
-    template = loader.get_template('home/admin.html')
+    template = loader.get_template('home/eliminarcalendario.html')
+    
+    context = {
+        'id': id
+    }
+
+    return HttpResponse(template.render(context, request))
+
+
+def eliminarEventoAux(request, id):
+    template = loader.get_template('home/eliminarcalendario.html')
+    
     context = {}
     cur = connection.cursor()
     cur.callproc('eliminar_calendario', [id])

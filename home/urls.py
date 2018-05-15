@@ -21,13 +21,16 @@ urlpatterns = [
     url(r'^admin/editar/(?P<id>[0-9]+)$', views.editarSitio, name='editarSitio'),
     url(r'^admin/editarAux/(?P<id>[0-9]+)$', views.editarSitioAux, name='editarSitioAux'),
     url(r'^admin/eliminar/(?P<id>[0-9]+)$', views.eliminarSitio, name='eliminarSitio'),
+    url(r'^admin/eliminarAux/(?P<id>[0-9]+)$', views.eliminarSitioAux, name='eliminarSitioAux'),
     url(r'^admin/editarservicio/(?P<id>[0-9]+)$', views.editarServicio, name='editarServicio'),
     url(r'^admin/editarservicioAux/(?P<id>[0-9]+)$', views.editarServicioAux, name='editarServicioAux'),
     url(r'^admin/eliminarservicio/(?P<id>[0-9]+)$', views.eliminarServicio, name='eliminarServicio'),
+    url(r'^admin/eliminarservicioAux/(?P<id>[0-9]+)$', views.eliminarServicioAux, name='eliminarServicioAux'),
     url(r'^admin/agregarEvento$', views.agregarEvento, name='agregarEvento'),
     url(r'^admin/editarEvento/(?P<id>[0-9]+)$', views.editarEvento, name='editarEvento'),
     url(r'^admin/editarEventoAux/(?P<id>[0-9]+)$', views.editarEventoAux, name='editarEventoAux'),
-    url(r'^admin/eliminarEvento/(?P<id>[0-9]+)$', views.eliminarEvento, name='eliminarEvento'),
+    url(r'^admin/eliminarevento/(?P<id>[0-9]+)$', views.eliminarEvento, name='eliminarEvento'),
+    url(r'^admin/eliminareventoAux/(?P<id>[0-9]+)$', views.eliminarEventoAux, name='eliminarEventoAux'),
 
     
     ]
