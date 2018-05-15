@@ -176,7 +176,6 @@ begin
 end $$
 delimiter ;
 
-select * from Usuario;
 
 
 delimiter $$
@@ -198,7 +197,6 @@ begin
 end $$
 delimiter ;
 
-drop procedure obtener_publicaciones_egresados
 
 delimiter $$
 create procedure obtener_publicaciones_escuela(numero_fila int)
@@ -291,10 +289,11 @@ delimiter $$
 create procedure obtener_publicacion_id(id int)
 
 begin
-	select p.titulo, p.descripcion, p.link_video, p.fecha, p.media, u.nombre_usuario from Publicacion p, Usuario u 
+	select p.titulo, p.descripcion, p.link_video, p.fecha, p.media, u.nombre_usuario, u.id from Publicacion p, Usuario u 
     where p.usuario_fk = u.id and p.id = id;
 end $$
 delimiter ;
+
 
 
 
@@ -335,10 +334,11 @@ delimiter $$
 create procedure obtener_comentarios_publicacion(id int)
 
 begin
-		select c.descripcion, c.fecha, u.nombre_usuario, u.media from Comentario c, Usuario u, Publicacion p
+		select c.descripcion, c.fecha, u.nombre_usuario, u.media, u.id from Comentario c, Usuario u, Publicacion p
         where p.id = id and c.publicacion_fk = p.id and c.usuario_fk = u.id;
 end $$
 delimiter ;
+
 
 delimiter $$
 create procedure obtener_id_calificacion(calificacion text)
@@ -398,7 +398,7 @@ create procedure obtener_relevantes()
 begin
 		select count(*) as 'Relevantes', cp.fecha from Tipo_Calificacion tp, CalificacionXPublicacion cp
         where tp.id = cp.calificacion_fk and tp.nombre = 'Relevante'
-        group by cp.fecha
+        group by cp.fecha desc
         limit 7;
 end $$
 delimiter ;
@@ -412,7 +412,7 @@ create procedure obtener_indiferentes()
 begin
 		select count(*) as 'Indiferentes', cp.fecha from Tipo_Calificacion tp, CalificacionXPublicacion cp
         where tp.id = cp.calificacion_fk and tp.nombre = 'Indiferente'
-        group by cp.fecha
+        group by cp.fecha desc
         limit 7;
 end $$
 delimiter ;
@@ -425,10 +425,14 @@ create procedure obtener_emocionantes()
 begin
 		select count(*) as 'Emocionantes', cp.fecha from Tipo_Calificacion tp, CalificacionXPublicacion cp
         where tp.id = cp.calificacion_fk and tp.nombre = 'Emocionante'
-        group by cp.fecha
+        group by cp.fecha desc
         limit 7;
 end $$
 delimiter ;
+
+
+
+
 
 
 
@@ -436,7 +440,7 @@ delimiter $$
 create procedure obtener_top_publicaciones_relevantes_escuela()
 
 begin
-		select count(*) as 'Relevantes', substring(p.titulo, 1, 45),  p.media, substring(p.descripcion, 1, 45) from Tipo_Calificacion tp, CalificacionXPublicacion cp, Publicacion p, Usuario u, Tipo_Usuario tu
+		select count(*) as 'Relevantes', substring(p.titulo, 1, 45),  p.media, substring(p.descripcion, 1, 45), p.id from Tipo_Calificacion tp, CalificacionXPublicacion cp, Publicacion p, Usuario u, Tipo_Usuario tu
         where cp.publicacion_fk = p.id and tp.id = cp.calificacion_fk and tp.nombre = 'Relevante' and cp.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado'
         group by p.id
         order by Relevantes desc
@@ -446,11 +450,12 @@ end $$
 delimiter ;
 
 
+
 delimiter $$
 create procedure obtener_top_publicaciones_relevantes_egresados()
 
 begin
-		select count(*) as 'Relevantes', substring(p.titulo, 1, 45),  p.media, substring(p.descripcion, 1, 45) from Tipo_Calificacion tp, CalificacionXPublicacion cp, Publicacion p, Usuario u, Tipo_Usuario tu
+		select count(*) as 'Relevantes', substring(p.titulo, 1, 45),  p.media, substring(p.descripcion, 1, 45), p.id from Tipo_Calificacion tp, CalificacionXPublicacion cp, Publicacion p, Usuario u, Tipo_Usuario tu
         where cp.publicacion_fk = p.id and tp.id = cp.calificacion_fk and tp.nombre = 'Relevante' and cp.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre = 'Egresado'
         group by p.id
         order by Relevantes desc 
@@ -570,6 +575,9 @@ begin
     where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado' and p.titulo like subst; 
 end $$
 delimiter ;
+
+
+
 
 
 
