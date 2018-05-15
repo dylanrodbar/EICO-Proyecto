@@ -1,6 +1,6 @@
             <div class="modal-content">           
                 <div class="modal-body" style="padding:40px 50px;">                
-                        <form class="form-signin" method='POST' action='{% url 'perfil:editarEducacionAux' id %}'  > {% csrf_token %}>
+                        <form class="form-signin" method='POST' action='{% url 'perfil:editarEducacionAux' id %}'  > {% csrf_token %}
                             <h1 align="center">Editar Educacion</h1>
                             <br>
                             <input type="text" id="input" name="tituloeducacion" class="form-control" placeholder="Nombre del titulo..." required autofocus>

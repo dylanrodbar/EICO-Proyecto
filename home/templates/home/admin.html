@@ -237,7 +237,7 @@
                 <!-- Modal content-->
                 <div class="modal-content">           
                     <div class="modal-body" style="padding:40px 50px;">                
-                            <form class="form-signin" method='POST' action='{% url 'home:editarSitioAux' id %}'  > {% csrf_token %}>
+                            <form class="form-signin" method='POST' action='{% url 'home:editarSitioAux' id %}'  > {% csrf_token %}
                                 <h1 align="center">Sitios de interes</h1>
                                 <br>
                                 <h4>Ingrese el nuevo nombre y descripcion</h4>
@@ -263,7 +263,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body" style="padding:40px 50px;">
-                        <form class="form-signin" method='POST' action='{% url 'home:agregarEvento'  %}'  > {% csrf_token %}>>
+                        <form class="form-signin" method='POST' action='{% url 'home:agregarEvento'  %}'  > {% csrf_token %}
                             <h1 align="center">Calendario</h1>
                             <br>
                             <h4>Ingrese una fecha, titulo y descripcion</h4>
@@ -292,7 +292,7 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-body" style="padding:40px 50px;">
-                            <form class="form-signin" method='POST' action='{% url 'home:editarEventoAux' id %}'  > {% csrf_token %}>
+                            <form class="form-signin" method='POST' action='{% url 'home:editarEventoAux' id %}'  > {% csrf_token %}
                                 <h1 align="center">Calendario</h1>
                                 <br>
                                 <h4>Ingrese la nueva fecha, titulo y descripcion</h4>

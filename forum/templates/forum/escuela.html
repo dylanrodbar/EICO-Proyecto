@@ -64,12 +64,12 @@
 <div class="w3-col l4">
         <!-- About Card -->
         <div class="w3-card w3-margin w3-margin-top" >
-            <form class="form-inline" style="margin-top: 10px; margin-bottom: 20px;" method='POST' enctype="multipart/form-data" action='{% url 'forum:buscarNoticiaEscuela'  %}'  >  {% csrf_token %}>
+            <form class="form-inline" style="margin-top: 10px; margin-bottom: 20px;" method='POST' enctype="multipart/form-data" action='{% url 'forum:buscarNoticiaEscuela'  %}'  >  {% csrf_token %}
               <div class="input-group">
                 <input type="text" class="form-control" name="nombrenoticia" size="50" placeholder="Buscar noticia..." required>
                 <div class="input-group-btn" >
                           
-                      <button  class="btn btn-default btn-sm" data-target="#Buscar_Usuario"><span class="glyphicon glyphicon-search" ></span></button>
+                      <button  class="btn btn-default"><span class="glyphicon glyphicon-search" ></span></button>
                     
                 </div>
               </div>
@@ -77,12 +77,12 @@
 
                       
         
-        <form class="form-inline" style="margin-top: 10px; margin-bottom: 20px;" method='POST' enctype="multipart/form-data" action='{% url 'forum:buscarUsuarioEscuela'  %}'  >  {% csrf_token %}>
+        <form class="form-inline" style="margin-top: 10px; margin-bottom: 20px;" method='POST' enctype="multipart/form-data" action='{% url 'forum:buscarUsuarioEscuela'  %}'  >  {% csrf_token %}
             <div class="input-group">
               <input type="text" class="form-control" name="nombreusuario" size="50" placeholder="Buscar usuario..." required>
               <div class="input-group-btn" >
                         
-                    <button  class="btn btn-default btn-sm" data-target="#Buscar_Usuario"><span class="glyphicon glyphicon-search" ></span></button>
+                    <button  class="btn btn-default"><span class="glyphicon glyphicon-search" ></span></button>
                   
               </div>
             </div>
@@ -103,7 +103,7 @@
           <ul class="w3-ul w3-hoverable w3-white">
             {% for post in noticiasrelevantes %}
             <li class="w3-padding-16">
-              <img src={{post.2}} alt="Image" class="w3-left w3-margin-right" style="width:50px">
+              <img src={{post.2}} alt="Image" class="w3-left w3-margin-right" style="height:50px; width: 50px">
               <span class="w3-large">{{post.1}}</span><br>
               <span>{{post.3}}</span>
             </li>

@@ -58,7 +58,7 @@
 
               {% if request.session.Usuario %}
               <h4>Deja un comentario</h4>
-                <form role="form" method='POST' enctype="multipart/form-data" action='{% url 'forum:insertarComentario' id %}'  >  {% csrf_token %}>
+                <form role="form" method='POST' enctype="multipart/form-data" action='{% url 'forum:insertarComentario' id %}'  >  {% csrf_token %}
                     <div class="form-group">
                     <textarea class="form-control" name="comentario" rows="6" style="resize: none;"required></textarea>
                     </div>

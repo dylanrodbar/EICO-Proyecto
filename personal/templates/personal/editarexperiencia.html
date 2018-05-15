@@ -1,7 +1,7 @@
             <!-- Modal content-->
             <div class="modal-content">           
                 <div class="modal-body" style="padding:40px 50px;">                
-                        <form class="form-signin" method='POST' action='{% url 'perfil:editarExperienciaAux' id %}'  > {% csrf_token %}>
+                        <form class="form-signin" method='POST' action='{% url 'perfil:editarExperienciaAux' id %}'  > {% csrf_token %}
                             <h1 align="center">Editar Experiencia</h1>
                             <br>
                             <input type="text" id="input" name="puestoexperiencia" class="form-control" placeholder="Nombre del puesto/Nombre proyecto..." required autofocus>

@@ -430,7 +430,6 @@ begin
 end $$
 delimiter ;
 
-call obtener_relevantes;
 
 
 delimiter $$
@@ -546,6 +545,39 @@ delimiter $$
 create procedure eliminar_experiencia(id int)
 begin
 	delete from Experiencia_O_Proyecto where Experiencia_O_Proyecto.id = id;
+end $$
+delimiter ;
+
+delimiter $$
+create procedure obtener_usuarios_substring_no_egresados(subst text)
+begin
+	select * from Usuario u, Tipo_Usuario tp where u.nombre_usuario like subst and u.tipo_usuario_fk = tp.id and tp.nombre <> 'Egresado'; 
+end $$
+delimiter ;
+
+delimiter $$
+create procedure obtener_usuarios_substring_egresados(subst text)
+begin
+	select * from Usuario u, Tipo_Usuario tp where u.nombre_usuario like subst and u.tipo_usuario_fk = tp.id and tp.nombre = 'Egresado'; 
+end $$
+delimiter ;
+
+
+delimiter $$
+create procedure obtener_publicaciones_substring_no_egresados(subst text)
+begin
+	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
+    where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre <> 'Egresado' and p.titulo like subst; 
+end $$
+delimiter ;
+
+
+
+delimiter $$
+create procedure obtener_publicaciones_substring_egresados(subst text)
+begin
+	select p.id, p.titulo, p.descripcion, p.fecha, p.media, p.link_video, u.nombre_usuario from Publicacion p, Usuario u, Tipo_Usuario tu
+    where p.usuario_fk = u.id and u.tipo_usuario_fk = tu.id and tu.nombre = 'Egresado' and p.titulo like subst; 
 end $$
 delimiter ;
 
