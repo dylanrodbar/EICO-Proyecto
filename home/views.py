@@ -26,32 +26,40 @@ cloudinary.config(
 )
 
 
+def esTodoCero(datos):
+    for i in datos:
+        if i != 0:
+            return False
+    return True
+
 def generarGrafico(nombre, datosGrafico):
     
 
-    print(datosGrafico)
-    fig = plt.figure(u"Reacciones") # Figure
-    ax = fig.add_subplot(111) # Axes
-    nombres = ['Relevante', 'Indiferente', 'Emocionante']
-    datos = [datosGrafico[0], datosGrafico[1], datosGrafico[2]]
+    if not esTodoCero(datosGrafico):
+        fig = plt.figure(u"Reacciones") # Figure
+        ax = fig.add_subplot(111) # Axes
+        nombres = ['Relevante', 'Indiferente', 'Emocionante']
+        datos = [datosGrafico[0], datosGrafico[1], datosGrafico[2]]
 
-        
+            
 
-    xx = range(len(datos))
+        xx = range(len(datos))
 
-    ax.bar(xx, datos, width=0.8, align='center')
-    ax.set_xticks(xx)
-    ax.set_xticklabels(nombres)
+        ax.bar(xx, datos, width=0.8, align='center')
+        ax.set_xticks(xx)
+        ax.set_xticklabels(nombres)
 
-    plt.title("Reacciones para: "+nombre)
+        plt.title("Reacciones para: "+nombre)
 
-    plt.savefig("Grafico"+nombre+".png")
-    imagen_subida = cloudinary.uploader.upload("Grafico"+nombre+".png")
+        plt.savefig("Grafico"+nombre+".png")
+        imagen_subida = cloudinary.uploader.upload("Grafico"+nombre+".png")
 
-    #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
-    imagen_subida_url = imagen_subida["secure_url"]
+        #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
+        imagen_subida_url = imagen_subida["secure_url"]
 
-    return imagen_subida_url
+        return imagen_subida_url
+    else:
+        return None
     
 def generarGraficos(lista_graficos, lista_graficos_fechas):
 
@@ -62,7 +70,9 @@ def generarGraficos(lista_graficos, lista_graficos_fechas):
         
 
         fecha = str(i.day)+"-"+str(i.month)+"-"+str(i.year)
-        lista_direcciones.append(generarGrafico(fecha, lista_graficos[contador]))
+        elemento = generarGrafico(fecha, lista_graficos[contador])
+        if elemento != None:
+            lista_direcciones.append(generarGrafico(fecha, lista_graficos[contador]))
         
         #plt.show()
         
@@ -92,10 +102,10 @@ def obtenerValoresGraficos(lista_graficos, relevantes, indiferentes, emocionante
 def obtenerFechas():
     lista = []
     lista.append(datetime.datetime.now())
-    contador = 6
-    while contador > 0:
+    contador = 1
+    while contador <= 6:
         lista.append(datetime.datetime.now() - datetime.timedelta(days=contador))
-        contador -= 1
+        contador += 1
     return lista
 
 
@@ -164,6 +174,101 @@ def dividirListaGruposCuatro(lista):
             largo = len(lista)
         lista_retorno.append(lista)
     return lista_retorno
+
+
+def estadisticasVisitas(request):
+    template = loader.get_template('home/admin.html')
+
+    cur = connection.cursor()
+    cur.callproc('obtener_sitios_interes', [])
+    sitios = cur.fetchall()
+
+
+    cur.nextset()
+
+    cur.callproc('obtener_servicios', [])
+    servicios = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_calendario', [])
+    calendarios = cur.fetchall()
+    cur.nextset()
+    cur.callproc('obtener_relevantes', [])
+    relevantes = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_indiferentes', [])
+    indiferentes = cur.fetchall()
+    
+    cur.nextset()
+    cur.callproc('obtener_emocionantes', [])
+    emocionantes = cur.fetchall()
+    
+    cur.close
+
+    inicio_valores = inicializarGraficosReacciones()
+    valores_graficos = obtenerValoresGraficos(inicio_valores, relevantes, indiferentes, emocionantes)
+    valores_graficos_fechas = obtenerFechas()
+
+    direcciones = generarGraficos(valores_graficos, valores_graficos_fechas)
+    
+    context = {
+        'sitiosinteres': sitios,
+        'servicios': servicios,
+        'calendarios': calendarios,
+        'id': 0,
+        'direcciones': direcciones
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def estadisticasReacciones(request):
+    template = loader.get_template('home/admin.html')
+
+    cur = connection.cursor()
+    cur.callproc('obtener_sitios_interes', [])
+    sitios = cur.fetchall()
+
+
+    cur.nextset()
+
+    cur.callproc('obtener_servicios', [])
+    servicios = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_calendario', [])
+    calendarios = cur.fetchall()
+    cur.nextset()
+    cur.callproc('obtener_relevantes', [])
+    relevantes = cur.fetchall()
+
+    cur.nextset()
+    cur.callproc('obtener_indiferentes', [])
+    indiferentes = cur.fetchall()
+    
+    cur.nextset()
+    cur.callproc('obtener_emocionantes', [])
+    emocionantes = cur.fetchall()
+    
+    cur.close
+
+    inicio_valores = inicializarGraficosReacciones()
+    valores_graficos = obtenerValoresGraficos(inicio_valores, relevantes, indiferentes, emocionantes)
+    valores_graficos_fechas = obtenerFechas()
+
+    print(valores_graficos)
+    print(valores_graficos_fechas)
+
+    direcciones = generarGraficos(valores_graficos, valores_graficos_fechas)
+    
+    context = {
+        'sitiosinteres': sitios,
+        'servicios': servicios,
+        'calendarios': calendarios,
+        'id': 0,
+        'direcciones': direcciones
+    }
+    return HttpResponse(template.render(context, request))
 
 def index(request):
     template = loader.get_template('home/index.html')
@@ -297,31 +402,17 @@ def admin(request):
     cur.callproc('obtener_calendario', [])
     calendarios = cur.fetchall()
     cur.nextset()
-    cur.callproc('obtener_relevantes', [])
-    relevantes = cur.fetchall()
-
-    cur.nextset()
-    cur.callproc('obtener_indiferentes', [])
-    indiferentes = cur.fetchall()
     
-    cur.nextset()
-    cur.callproc('obtener_emocionantes', [])
-    emocionantes = cur.fetchall()
     
     cur.close
 
-    inicio_valores = inicializarGraficosReacciones()
-    valores_graficos = obtenerValoresGraficos(inicio_valores, relevantes, indiferentes, emocionantes)
-    valores_graficos_fechas = obtenerFechas()
-
-    direcciones = generarGraficos(valores_graficos, valores_graficos_fechas)
     
     context = {
         'sitiosinteres': sitios,
         'servicios': servicios,
         'calendarios': calendarios,
         'id': 0,
-        'direcciones': direcciones
+        'direcciones': []
     }
     return HttpResponse(template.render(context, request))
 

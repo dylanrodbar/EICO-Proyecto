@@ -104,7 +104,10 @@
           <ul class="w3-ul w3-hoverable w3-white">
               {% for post in noticiasrelevantes %}
               <li class="w3-padding-16">
-                <img src={{post.2}} alt="Image" class="w3-left w3-margin-right" style="height:50px; width: 50px">
+                <a href="/foro/ver/{{post.4}}">
+              
+                  <img src={{post.2}} alt="Image" class="w3-left w3-margin-right" style="height:50px; width: 50px">
+                </a>
                 <span class="w3-large">{{post.1}}</span><br>
                 <span>{{post.3}}</span>
               </li>

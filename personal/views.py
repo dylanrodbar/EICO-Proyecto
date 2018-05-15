@@ -57,10 +57,9 @@ def viewProfile(request):
 # Create your views here.
 def viewProfileUser(request, id):
 
-    template = loader.get_template('personal/perfil.html')
+    template = loader.get_template('personal/perfilajeno.html')
 
-    id_usuario = request.session['Usuario']
-
+    
     cur = connection.cursor()
     cur.callproc('obtener_usuario_id', [id,])
     datos_usuario = cur.fetchall()
@@ -174,8 +173,7 @@ def editarEducacionAux(request, id):
     fecha_final = request.POST.get('ffinaleducacion')
     descripcion = request.POST.get('descripcioneducacion')
 
-    print("AUXUXUXU")
-
+    
 
     cur = connection.cursor()
     cur.callproc('editar_educacion', [id, titulo, centro_educativo, fecha_inicio, fecha_final, descripcion, id_usuario])
