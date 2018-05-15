@@ -267,6 +267,8 @@ def viewInteres(request):
     sitios = cur.fetchall()
     cur.close
 
+
+
     lista_publicaciones = convertir_tupla_lista(sitios)
     
     lista_acomodada = dividirListaGruposCuatro(lista_publicaciones)
@@ -350,10 +352,18 @@ def agregarSitio(request):
     template = loader.get_template('home/admin.html')
     titulo = request.POST.get('titulo-sitio')
     descripcion = request.POST.get('descripcion-sitio')
-    print(titulo)
-    print(descripcion)
     cur = connection.cursor()
     cur.callproc('insertar_sitio_interes', [titulo, descripcion])
+    cur.close
+    return HttpResponseRedirect(reverse('home:admin'))
+
+
+def agregarServicio(request):
+    template = loader.get_template('home/admin.html')
+    titulo = request.POST.get('titulo-servicio')
+    descripcion = request.POST.get('descripcion-servicio')
+    cur = connection.cursor()
+    cur.callproc('insertar_servicio', [titulo, descripcion])
     cur.close
     return HttpResponseRedirect(reverse('home:admin'))
 
@@ -384,6 +394,35 @@ def eliminarSitio(request, id):
     cur.close
 
     return HttpResponseRedirect(reverse('home:admin'))
+
+
+def editarServicio(request, id):
+    template = loader.get_template('home/editarservicio.html')
+    context = {
+        'id': id
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def editarServicioAux(request, id):
+    template = loader.get_template('home/editarservicio.html')
+    titulo = request.POST.get('titulo')
+    contenido = request.POST.get('descripcion')
+    cur = connection.cursor()
+    cur.callproc('editar_servicio', [id, titulo, contenido])
+    cur.close
+    return HttpResponseRedirect(reverse('home:admin'))
+
+
+def eliminarServicio(request, id):
+    template = loader.get_template('home/admin.html')
+    context = {}
+    cur = connection.cursor()
+    cur.callproc('eliminar_servicio', [id])
+    cur.close
+
+    return HttpResponseRedirect(reverse('home:admin'))
+
 
 
 def agregarEvento(request):

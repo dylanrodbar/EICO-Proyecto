@@ -68,6 +68,11 @@
     <div id="menu1" class="tab-pane fade">
       <h3>Servicios</h3>
       
+      <div align="right" style="margin-right:18px; margin-bottom:8px;">
+            <a href="#" data-toggle="modal" data-target="#AgregarServicio"><button type="submit" class="btn btn-default btn-sm" >
+            <span class="glyphicon glyphicon-plus"></span></button></a>
+        </div>
+        
 
         <ul class="list-group">
         <div id="list" style="height: auto; max-height: 220px; overflow-x: hidden;">
@@ -75,10 +80,11 @@
             <div class="row">
                 {% for servicio in servicios %}
                 <div class="col-md-8"> {{servicio.1}} </div>
-                <div class="col-md-4" align= "right">
-                    <button type="submit" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-pencil"></span></button>
-                    <button type="submit" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></button>
-                </div>
+                    <div class="col-md-4" align= "right">
+                        <a href="admin/editarservicio/{{servicio.0}}" data-toggle="modal" data-target="#editarSitio"><button type="submit" class="btn btn-default btn-sm" >
+                                <span class="glyphicon glyphicon-pencil"></span></button></a>
+                        <a type="submit" href="admin/eliminarservicio/{{servicio.0}}" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove"></span></a>
+                    </div>
                 {% endfor %}
                 
             </li>
@@ -314,6 +320,33 @@
                 </div>
             </div>
         </div>
+
+
+         <!-- Modal Agregar Servicio -->
+  <div class="modal fade" id="AgregarServicio" role="dialog" style="padding-top:150px;">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">           
+                <div class="modal-body" style="padding:40px 50px;">                
+                        <form class="form-signin" method='POST' action= '{% url 'home:agregarServicio' %}'  > {% csrf_token %}
+                            <h1 align="center">Sitios de interes</h1>
+                            <br>
+                            <h4>Ingrese el nombre y descripcion</h4>
+                            <br>
+                            <label for="EditNameSitio" class="sr-only">Correo</label>
+                            <input type="text" id="titulo-sitio" name="titulo-servicio" class="form-control" placeholder="Nombre..." required autofocus>
+                            <br>
+                            <div class="form-group">
+                                    <label for="EditDescriptionSitio"></label>
+                                    <textarea class="form-control" rows="5" id="descripcion-servicio" name="descripcion-sitio" placeholder="Descripcion..."></textarea>
+                            </div>
+                            <br>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Agregar</button>
+                      </form>      
+                </div>
+            </div>    
+        </div>
+    </div>  
 
 
 
