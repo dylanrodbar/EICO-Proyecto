@@ -5,6 +5,8 @@ from django.template import loader
 from django.db import connection
 #from django.urls import reverse
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
+
 
 import cloudinary.uploader
 import math
@@ -164,11 +166,29 @@ def insertarPost(request):
     #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
     imagen_subida_url = imagen_subida["secure_url"]
 
-    print("imagen_subida_url")
-    print(imagen_subida_url)
     cur = connection.cursor()
     cur.callproc('insertar_publicacion', [titulo, descripcion, embed_link_video, imagen_subida_url, user])
+    cur.nextset()
+    cur.callproc('obtener_correos_electronicos_sin_administradores', [])
+    correos = cur.fetchall()
     cur.close
+    
+    lista_correos = []
+    largo = len(correos)
+    for i in range(largo):
+        lista_correos.append(correos[i][0])
+
+    seccion = "Escuela"
+    if request.session['TipoUsuario'] == "Egresado":
+        seccion = "Egresados"
+
+
+    mensaje = "Notificación de una nueva noticia en la sección de: "+seccion+". Título: "+titulo
+    
+    send_mail('Notificación de nueva noticia',
+             mensaje, 
+             'eicocuenta@gmail.com',
+             lista_correos)
 
     
     return HttpResponseRedirect(reverse('forum:viewEscuela'))
