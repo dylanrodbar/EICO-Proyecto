@@ -106,6 +106,7 @@ def editarPerfil(request):
     lugar_trabajo = request.POST.get('lugar_trabajo')
     correo_electronico = request.POST.get('correo_electronico')
     archivo = request.FILES.get("archivo")
+    password = request.POST.get("password")
 
     imagen_subida = cloudinary.uploader.upload(archivo)
 
@@ -113,7 +114,7 @@ def editarPerfil(request):
     imagen_subida_url = imagen_subida["secure_url"]
 
     cur = connection.cursor()
-    cur.callproc('editar_usuario', [id_usuario, nombre, correo_electronico, titulo, puesto_actual, lugar_trabajo, imagen_subida_url])
+    cur.callproc('editar_usuario', [id_usuario, nombre, correo_electronico, titulo, puesto_actual, lugar_trabajo, imagen_subida_url, password])
     cur.close
 
     return HttpResponseRedirect(reverse('perfil:viewProfile'))

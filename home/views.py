@@ -489,7 +489,11 @@ def agregarUsuarios(request):
 
     file = request.FILES.get("archivo")
 
+    print(file)
+
     elementos_excel = Excel.manejar_excel(file)
+
+    print(elementos_excel)
 
     cur = connection.cursor()
     for i in (elementos_excel):
@@ -497,11 +501,29 @@ def agregarUsuarios(request):
         contrasena = i[3]
         correo = i[1]
         media = 1
-        tipo_usuario = int(i[2])
-        cur.callproc('insertar_usuario', [usuario, contrasena, correo, media, tipo_usuario])
+        tipo_usuario = str(i[2])
+        print(tipo_usuario)
+        cur.callproc('obtener_id_tipo_usuario', [tipo_usuario])
+        tipo_usuario_nu = cur.fetchall()
+        print(tipo_usuario_nu[0][0])
+        tipo_usuario_numero = tipo_usuario_nu[0][0]
+
+        cur.nextset()
+        cur.callproc('insertar_usuario', [usuario, contrasena, correo, media, tipo_usuario_numero])
         cur.nextset()
 
     cur.close
+
+    
+
+    for i in (elementos_excel):
+        correo = i[1]
+        mensaje = "Se le notifica que su cuenta de usuario para nuestro sistema fue creada con éxito. Correo: "+i[1]+". Contraseña: "+i[3]
+        send_mail('Notificación de creación de la cuenta solicitada',
+             mensaje, 
+             'eicocuenta@gmail.com',
+             [correo])
+
 
     return HttpResponseRedirect(reverse('home:admin'))
 
