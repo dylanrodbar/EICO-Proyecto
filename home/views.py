@@ -61,6 +61,36 @@ def generarGrafico(nombre, datosGrafico):
     else:
         return None
     
+
+def generarGraficoVisitas(nombre, datosGrafico):
+    
+
+    if not esTodoCero(datosGrafico):
+        fig = plt.figure(u"Visitas") # Figure
+        ax = fig.add_subplot(111) # Axes
+        nombres = ['Visitas']
+        datos = [datosGrafico[0]]
+
+            
+
+        xx = range(len(datos))
+
+        ax.bar(xx, datos, width=0.4, align="edge")
+        ax.set_xticks(xx)
+        ax.set_xticklabels(nombres)
+
+        plt.title("Visitas para: "+nombre)
+
+        plt.savefig("Grafico"+nombre+".png")
+        imagen_subida = cloudinary.uploader.upload("Grafico"+nombre+".png")
+
+        #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
+        imagen_subida_url = imagen_subida["secure_url"]
+
+        return imagen_subida_url
+    else:
+        return None
+
 def generarGraficos(lista_graficos, lista_graficos_fechas):
 
     contador = 0
@@ -85,6 +115,39 @@ def generarGraficos(lista_graficos, lista_graficos_fechas):
     return lista_direcciones
     
 
+def generarGraficosVisitas(lista_graficos, lista_graficos_fechas):
+
+    contador = 0
+    lista_direcciones = []
+    print(lista_graficos)
+    for i in lista_graficos_fechas:
+        
+
+        fecha = str(i.day)+"-"+str(i.month)+"-"+str(i.year)
+        elemento = generarGraficoVisitas(fecha, lista_graficos[contador])
+        if elemento != None:
+            lista_direcciones.append(generarGraficoVisitas(fecha, lista_graficos[contador]))
+        
+        #plt.show()
+        
+        contador += 1
+
+        #imagen_subida = cloudinary.uploader.upload(img)
+
+        #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
+        #imagen_subida_url = imagen_subida["secure_url"]
+    return lista_direcciones
+    
+
+
+
+def obtenerValoresGraficosVisitas(lista_graficos, visitas):
+    largo_visitas = len(visitas)
+    for i in range(largo_visitas):
+        lista_graficos[i][0] = visitas[i][0]
+    return lista_graficos
+    
+    
 def obtenerValoresGraficos(lista_graficos, relevantes, indiferentes, emocionantes):
     largo_relevantes = len(relevantes)
     largo_indiferentes = len(indiferentes)
@@ -108,6 +171,12 @@ def obtenerFechas():
         contador += 1
     return lista
 
+def obtenerValoresGraficosFechasVisitas(lista_graficos, visitas):
+    largo_visitas = len(visitas)
+    
+    for i in range(largo_visitas):
+        lista_graficos[i][0] = visitas[i][1]
+    return lista_graficos
 
 def obtenerValoresGraficosFechas(lista_graficos, relevantes, indiferentes, emocionantes):
     largo_relevantes = len(relevantes)
@@ -123,6 +192,8 @@ def obtenerValoresGraficosFechas(lista_graficos, relevantes, indiferentes, emoci
     return lista_graficos
     
 
+def inicializarGraficosVisitas():
+    return [[0],[0],[0],[0],[0],[0],[0]]
 def inicializarGraficosReacciones():
     return [[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
 
@@ -193,24 +264,16 @@ def estadisticasVisitas(request):
     cur.callproc('obtener_calendario', [])
     calendarios = cur.fetchall()
     cur.nextset()
-    cur.callproc('obtener_relevantes', [])
-    relevantes = cur.fetchall()
-
-    cur.nextset()
-    cur.callproc('obtener_indiferentes', [])
-    indiferentes = cur.fetchall()
-    
-    cur.nextset()
-    cur.callproc('obtener_emocionantes', [])
-    emocionantes = cur.fetchall()
+    cur.callproc('obtener_visitas', [])
+    visitas = cur.fetchall()
     
     cur.close
 
-    inicio_valores = inicializarGraficosReacciones()
-    valores_graficos = obtenerValoresGraficos(inicio_valores, relevantes, indiferentes, emocionantes)
+    inicio_valores = inicializarGraficosVisitas()
+    valores_graficos = obtenerValoresGraficosVisitas(inicio_valores, visitas)
     valores_graficos_fechas = obtenerFechas()
 
-    direcciones = generarGraficos(valores_graficos, valores_graficos_fechas)
+    direcciones = generarGraficosVisitas(valores_graficos, valores_graficos_fechas)
     
     context = {
         'sitiosinteres': sitios,

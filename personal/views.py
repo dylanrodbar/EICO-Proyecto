@@ -57,7 +57,11 @@ def viewProfile(request):
 # Create your views here.
 def viewProfileUser(request, id):
 
-    template = loader.get_template('personal/perfilajeno.html')
+    template = None
+    if int(id) == int(request.session['Usuario']):
+        template = loader.get_template('personal/perfil.html')
+    else:
+        template = loader.get_template('personal/perfilajeno.html')
 
     
     cur = connection.cursor()
