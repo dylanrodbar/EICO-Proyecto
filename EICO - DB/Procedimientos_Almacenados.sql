@@ -611,3 +611,23 @@ begin
 end $$
 delimiter ;
 
+
+delimiter $$
+create procedure insertar_visita()
+begin
+	insert into Visita(fecha) values (curdate()); 
+end $$
+delimiter ;
+
+call insertar_visita()
+
+delimiter $$
+create procedure obtener_visitas()
+
+begin
+		select count(*) as 'Visitas', v.fecha from Visita v
+        group by v.fecha desc
+        limit 7;
+end $$
+delimiter ;
+

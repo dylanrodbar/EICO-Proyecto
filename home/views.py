@@ -346,6 +346,10 @@ def index(request):
     cur.callproc('obtener_publicaciones_recientes', [])
     publicaciones = cur.fetchall() 
     cur.nextset()
+
+    cur.callproc('insertar_visita', [])
+    cur.nextset()
+
     cur.close()
 
     lista_publicaciones = convertir_tupla_lista(publicaciones)
