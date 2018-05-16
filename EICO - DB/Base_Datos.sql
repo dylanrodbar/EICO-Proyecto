@@ -169,6 +169,16 @@ create table if not exists CalificacionXPublicacion(
 );
 
 
+create table Visita(
+	id int auto_increment,
+    fecha date,
+    
+    primary key(id)
+
+)
+
+
+
 
 
 #create table if not exists MediaXPublicacion(

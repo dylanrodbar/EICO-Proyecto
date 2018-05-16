@@ -170,9 +170,9 @@ delimiter ;
 
 
 delimiter $$
-create procedure insertar_usuario(nombre_usuario varchar(50), contrasena varchar(50), correo_electronico varchar(40), titulo varchar(100), profesion varchar(100), lugar_trabajo varchar(200), media text, tipo_usuario_fk int)
+create procedure insertar_usuario(nombre_usuario varchar(50), contrasena varchar(50), correo_electronico varchar(40), media text, tipo_usuario_fk int)
 begin
-	insert into Usuario(nombre_usuario, contrasena, correo_electronico, titulo, profesion, lugar_trabajo, media, tipo_usuario_fk) values(nombre_usuario, contrasena, correo_electronico, titulo, profesion, lugar_trabajo, media, tipo_usuario_fk);
+	insert into Usuario(nombre_usuario, contrasena, correo_electronico, titulo, profesion, lugar_trabajo, media, tipo_usuario_fk) values(nombre_usuario, contrasena, correo_electronico, 'llenar', 'llenar', 'llenar', media, tipo_usuario_fk);
 end $$
 delimiter ;
 
@@ -309,13 +309,15 @@ delimiter ;
 
 
 delimiter $$
-create procedure editar_usuario(id int, nombre_usuario varchar(50), correo_electronico varchar(40), titulo varchar(100), profesion varchar(100), lugar_trabajo varchar(200), media text)
+create procedure editar_usuario(id int, nombre_usuario varchar(50), correo_electronico varchar(40), titulo varchar(100), profesion varchar(100), lugar_trabajo varchar(200), media text, contrasena text)
 
 begin
-		update Usuario set Usuario.nombre_usuario = nombre_usuario, Usuario.correo_electronico = correo_electronico, Usuario.titulo = titulo, Usuario.profesion = profesion, Usuario.lugar_trabajo = lugar_trabajo, Usuario.media = media
+		update Usuario set Usuario.nombre_usuario = nombre_usuario, Usuario.correo_electronico = correo_electronico, Usuario.titulo = titulo, Usuario.profesion = profesion, Usuario.lugar_trabajo = lugar_trabajo, Usuario.media = media, Usuario.contrasena = contrasena
         where Usuario.id = id;
 end $$
 delimiter ;
+
+
 
 
 
@@ -631,3 +633,5 @@ begin
 end $$
 delimiter ;
 
+
+select * from Usuario
