@@ -589,3 +589,25 @@ begin
 end $$
 delimiter ;
 
+
+delimiter $$
+create procedure obtener_correos_electronicos()
+begin
+	select u.correo_electronico from Usuario u; 
+end $$
+delimiter ;
+
+delimiter $$
+create procedure obtener_correos_electronicos_administradores()
+begin
+	select u.correo_electronico from Usuario u, Tipo_Usuario tu where u.tipo_usuario_fk = tu.id and (tu.nombre = 'Administrador' or tu.nombre = 'Director'); 
+end $$
+delimiter ;
+
+delimiter $$
+create procedure obtener_correos_electronicos_sin_administradores()
+begin
+	select u.correo_electronico from Usuario u, Tipo_Usuario tu where u.tipo_usuario_fk = tu.id and tu.nombre <> 'Administrador'; 
+end $$
+delimiter ;
+
