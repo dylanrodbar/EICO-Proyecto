@@ -587,3 +587,39 @@ def eliminarEventoAux(request, id):
     cur.close
 
     return HttpResponseRedirect(reverse('home:admin'))
+
+
+def solicitarUsuario(request):
+    template = loader.get_template('home/header.html')
+    
+    nombresolicitud = request.POST.get('nombresolicitud')
+    emailsolicitud = request.POST.get('emailsolicitud')
+    descripcionsolicitud = request.POST.get('descripcionsolicitud')
+
+
+    cur = connection.cursor()
+    cur.callproc('obtener_correos_electronicos_administradores', [])
+    correos = cur.fetchall()
+    cur.close
+
+    largo = len(correos)
+    lista_emails = []
+    for i in range(largo):
+        lista_emails.append(correos[i][0])
+    lista_emails.append("dylanrodbar97@gmail.com")
+
+    mensaje = "Se requiere una cuenta para la de nombre: "+nombresolicitud+". Correo electrónico: "+emailsolicitud +". Debido a la siguiente razón: "+descripcionsolicitud
+
+    send_mail('Solicitud de cuenta para el portal de EICO',
+             mensaje, 
+             'eicocuenta@gmail.com',
+             lista_emails)
+
+
+    send_mail('Solicitud de cuenta para el portal de EICO',
+             'Estimado(a), se le comunica que se estará procesando su solicitud de la cuenta para nuestro portal, se le estará dando una pronta notificación', 
+             'eicocuenta@gmail.com',
+             [emailsolicitud])
+    
+
+    return HttpResponseRedirect(reverse('home:index'))
