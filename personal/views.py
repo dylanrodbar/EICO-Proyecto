@@ -18,13 +18,22 @@ cloudinary.config(
 # Create your views here.
 def viewProfile(request):
 
+
     template = loader.get_template('personal/perfil.html')
 
+    print("hola")
+    print(request.session['Usuario'])
+
     id_usuario = request.session['Usuario']
+
+    print(id_usuario)
+
 
     cur = connection.cursor()
     cur.callproc('obtener_usuario_id', [id_usuario,])
     datos_usuario = cur.fetchall()
+
+    print(datos_usuario)
 
     cur.nextset()
     cur.callproc('obtener_publicaciones_usuario', [id_usuario, ])
@@ -43,6 +52,8 @@ def viewProfile(request):
 
     datos_usuario_detalle = datos_usuario[0]
 
+    print(datos_usuario_detalle)
+
     context = {
         'datos_usuario': datos_usuario_detalle,
         'publicaciones_usuario': publicaciones_usuario,
@@ -58,6 +69,7 @@ def viewProfile(request):
 def viewProfileUser(request, id):
 
     template = None
+    print("holaaaaaa")
     if int(id) == int(request.session['Usuario']):
         template = loader.get_template('personal/perfil.html')
     else:
@@ -93,6 +105,8 @@ def viewProfileUser(request, id):
     }
 
     return HttpResponse(template.render(context, request))
+
+
 
 def editarPerfil(request):
 
@@ -216,6 +230,7 @@ def editarExperienciaAux(request, id):
 def eliminarEducacion(request, id):
     template = loader.get_template('personal/perfil.html')
     context = {}
+    print("hola")
     cur = connection.cursor()
     cur.callproc('eliminar_educacion', [id])
     cur.close
@@ -226,6 +241,7 @@ def eliminarEducacion(request, id):
 def eliminarExperiencia(request, id):
     template = loader.get_template('personal/perfil.html')
     context = {}
+    print("hola")
     cur = connection.cursor()
     cur.callproc('eliminar_experiencia', [id])
     cur.close

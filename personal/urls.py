@@ -4,7 +4,7 @@ from . import views
 app_name = "perfil"
 urlpatterns = [ 
                 url(r'^$', views.viewProfile, name='viewProfile'),
-                url(r'(?P<id>[0-9]+)$', views.viewProfileUser, name='viewProfileUser'),
+                url(r'ajeno/(?P<id>[0-9]+)$', views.viewProfileUser, name='viewProfileUser'),
                 url(r'editarPerfil/$', views.editarPerfil, name='editarPerfil'),
                 url(r'agregarExpecienciaOTrabajo/$', views.agregarExperienciaOTrabajo, name='agregarExperienciaOTrabajo'),
                 url(r'agregarEducacion/$', views.agregarEducacion, name='agregarEducacion'),
