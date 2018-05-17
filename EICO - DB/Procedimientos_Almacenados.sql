@@ -633,5 +633,19 @@ begin
 end $$
 delimiter ;
 
+delimiter $$
+create procedure editar_usuario_existente(correo_electronico text, nombre_usuario text, tipo_usuario_fk int)
 
-select * from Usuario
+begin
+		update Usuario set Usuario.nombre_usuario = nombre_usuario, Usuario.tipo_usuario_fk = tipo_usuario_fk where Usuario.correo_electronico = correo_electronico;
+end $$
+delimiter ;
+
+delimiter $$
+create procedure obtener_usuario_existente(correo_electronico text)
+
+begin
+		select * from Usuario u where u.correo_electronico = correo_electronico;
+end $$
+delimiter ;
+
