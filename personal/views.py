@@ -228,7 +228,16 @@ def editarExperienciaAux(request, id):
 
 
 def eliminarEducacion(request, id):
-    template = loader.get_template('personal/perfil.html')
+    template = loader.get_template('personal/eliminareducacion.html')
+    
+    context = {
+        'id': id
+    }
+    
+    return HttpResponse(template.render(context, request))
+    
+def eliminarEducacionAux(request, id):
+    template = loader.get_template('personal/eliminareducacion.html')
     context = {}
     print("hola")
     cur = connection.cursor()
@@ -238,8 +247,22 @@ def eliminarEducacion(request, id):
     return HttpResponseRedirect(reverse('perfil:viewProfile'))
 
 
+
+
 def eliminarExperiencia(request, id):
-    template = loader.get_template('personal/perfil.html')
+
+    template = loader.get_template('personal/eliminarexperiencia.html')
+    
+    context = {
+        'id': id
+    }
+    
+    return HttpResponse(template.render(context, request))
+    
+    
+
+def eliminarExperienciaAux(request, id):
+    template = loader.get_template('personal/eliminarexperiencia.html')
     context = {}
     print("hola")
     cur = connection.cursor()

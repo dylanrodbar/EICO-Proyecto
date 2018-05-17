@@ -16,6 +16,7 @@ import Excel
 import math
 import matplotlib.pyplot as plt
 import datetime
+import threading
 
 import cloudinary.uploader
 
@@ -33,8 +34,8 @@ def esTodoCero(datos):
     return True
 
 def generarGrafico(nombre, datosGrafico):
-    
-
+    #plt.switch.backend y plt.close se usan para no generar errores de hilos en matplotlib
+    plt.switch_backend('Agg')
     if not esTodoCero(datosGrafico):
         fig = plt.figure(u"Reacciones") # Figure
         ax = fig.add_subplot(111) # Axes
@@ -57,6 +58,8 @@ def generarGrafico(nombre, datosGrafico):
         #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
         imagen_subida_url = imagen_subida["secure_url"]
 
+        plt.close()        
+
         return imagen_subida_url
     else:
         return None
@@ -65,6 +68,8 @@ def generarGrafico(nombre, datosGrafico):
 def generarGraficoVisitas(nombre, datosGrafico):
     
 
+    #plt.switch.backend y plt.close se usan para no generar errores de hilos en matplotlib
+    plt.switch_backend('Agg')
     if not esTodoCero(datosGrafico):
         fig = plt.figure(u"Visitas") # Figure
         ax = fig.add_subplot(111) # Axes
@@ -86,6 +91,9 @@ def generarGraficoVisitas(nombre, datosGrafico):
 
         #obtiene la referencia que va a permitir mostrar la imagen en la aplicación
         imagen_subida_url = imagen_subida["secure_url"]
+
+        plt.close()
+
 
         return imagen_subida_url
     else:
@@ -126,6 +134,7 @@ def generarGraficosVisitas(lista_graficos, lista_graficos_fechas):
         fecha = str(i.day)+"-"+str(i.month)+"-"+str(i.year)
         elemento = generarGraficoVisitas(fecha, lista_graficos[contador])
         if elemento != None:
+
             lista_direcciones.append(generarGraficoVisitas(fecha, lista_graficos[contador]))
         
         #plt.show()
@@ -246,8 +255,7 @@ def dividirListaGruposCuatro(lista):
         lista_retorno.append(lista)
     return lista_retorno
 
-
-def estadisticasVisitas(request):
+def estadisticasVisitasAux(request):
     template = loader.get_template('home/admin.html')
 
     cur = connection.cursor()
@@ -274,6 +282,8 @@ def estadisticasVisitas(request):
     valores_graficos_fechas = obtenerFechas()
 
     direcciones = generarGraficosVisitas(valores_graficos, valores_graficos_fechas)
+
+    plt.close('all')
     
     context = {
         'sitiosinteres': sitios,
@@ -285,7 +295,11 @@ def estadisticasVisitas(request):
     return HttpResponse(template.render(context, request))
 
 
-def estadisticasReacciones(request):
+def estadisticasVisitas(request):
+    template = loader.get_template('home/admin.html')
+    return HttpResponseRedirect(reverse('home:estadisticasVisitasAux'))
+
+def estadisticasReaccionesAux(request):
     template = loader.get_template('home/admin.html')
 
     cur = connection.cursor()
@@ -319,11 +333,11 @@ def estadisticasReacciones(request):
     valores_graficos = obtenerValoresGraficos(inicio_valores, relevantes, indiferentes, emocionantes)
     valores_graficos_fechas = obtenerFechas()
 
-    print(valores_graficos)
-    print(valores_graficos_fechas)
-
+    
     direcciones = generarGraficos(valores_graficos, valores_graficos_fechas)
     
+    plt.close('all')
+
     context = {
         'sitiosinteres': sitios,
         'servicios': servicios,
@@ -332,6 +346,13 @@ def estadisticasReacciones(request):
         'direcciones': direcciones
     }
     return HttpResponse(template.render(context, request))
+
+
+def estadisticasReacciones(request):
+    template = loader.get_template('home/admin.html')
+    return HttpResponseRedirect(reverse('home:estadisticasReaccionesAux'))
+
+    
 
 def index(request):
     template = loader.get_template('home/index.html')
@@ -489,8 +510,6 @@ def agregarUsuarios(request):
 
     file = request.FILES.get("archivo")
 
-    print(file)
-
     elementos_excel = Excel.manejar_excel(file)
 
     print(elementos_excel)
@@ -502,15 +521,24 @@ def agregarUsuarios(request):
         correo = i[1]
         media = 1
         tipo_usuario = str(i[2])
-        print(tipo_usuario)
         cur.callproc('obtener_id_tipo_usuario', [tipo_usuario])
         tipo_usuario_nu = cur.fetchall()
-        print(tipo_usuario_nu[0][0])
         tipo_usuario_numero = tipo_usuario_nu[0][0]
 
+        #se pregunta si el usuario ya existe
         cur.nextset()
-        cur.callproc('insertar_usuario', [usuario, contrasena, correo, media, tipo_usuario_numero])
-        cur.nextset()
+        cur.callproc('obtener_usuario_existente', [correo])
+        us = cur.fetchall()
+        
+        if us != ():
+            cur.nextset()
+            cur.callproc('editar_usuario_existente', [correo, usuario, tipo_usuario_numero])
+            cur.nextset()
+
+        else:
+            cur.nextset()
+            cur.callproc('insertar_usuario', [usuario, contrasena, correo, media, tipo_usuario_numero])
+            cur.nextset()
 
     cur.close
 

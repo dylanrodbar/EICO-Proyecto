@@ -19,6 +19,11 @@ urlpatterns = [
 
                 url(r'^eliminar/(?P<id>[0-9]+)/$', views.deleteNoticia, name="deleteNoticia"),
 
+                url(r'^eliminar/(?P<id>[0-9]+)/$', views.deleteNoticia, name="deleteNoticia"),
+
+                url(r'^eliminar/eliminarpublicacionAux/(?P<id>[0-9]+)/$', views.eliminarPublicacionAux, name="eliminarPublicacionAux"),
+
+
                 url(r'^noticia/calificarrelevante/(?P<id>[0-9]+)/$', views.calificarNoticiaRelevante, name="calificarNoticiaRelevante"),
 
                 url(r'^noticia/calificarindiferente/(?P<id>[0-9]+)/$', views.calificarNoticiaIndiferente, name="calificarNoticiaIndiferente"),

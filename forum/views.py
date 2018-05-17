@@ -278,14 +278,22 @@ def changePost(request, id):
 
 
 def deleteNoticia(request, id):
-    template = loader.get_template('forum/editarNoticia.html')
+    template = loader.get_template('forum/eliminarpublicacion.html')
+    
+    context = {
+        'id': id
+    }
+    
+    return HttpResponse(template.render(context, request))
+    
+def eliminarPublicacionAux(request, id):
+    template = loader.get_template('forum/eliminarpublicacion.html')
 
     cur = connection.cursor()
     cur.callproc('eliminar_publicacion', [id,])
     cur.close
 
     return HttpResponseRedirect(reverse('perfil:viewProfile'))
-
 
 
 def insertarComentario(request, id):
